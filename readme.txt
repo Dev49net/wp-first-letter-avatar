@@ -26,7 +26,7 @@ All images were compressed using the fantastic <https://tinypng.com/>, so avatar
 
 This plugin is provided on CC0 1.0 license (http://creativecommons.org/publicdomain/zero/1.0/). It means **you can do whatever you want with it, including commercial projects**.
 
-[Fork the plugin on GitHub.](https://github.com/XXXXX)
+[Fork the plugin on GitHub.](https://github.com/DanielAGW/wp-first-letter-avatar)
 
 == Installation ==
 
