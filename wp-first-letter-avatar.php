@@ -1,18 +1,18 @@
 <?php
 /**
  * Plugin Name: WP First Letter Avatar
- * Plugin URI: -
+ * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
+ * Contributors: DanielAGW
  * Description: Sets custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
  * Version: 1.0
  * Author: Daniel Wroblewski
- * Author URI: -
+ * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
  * Requires at least: 3.0.1
  * Tested up to: 4.1
  * Stable tag: trunk
- * License: CC0 1.0
- * License URI: http://creativecommons.org/publicdomain/zero/1.0/
- * License description: Plugin is provided "as is". You can do whatever you want with it - modify, sell, use for commercial projects etc. I just hope you find it useful.
+ * License: GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 
