@@ -28,7 +28,8 @@ quality.
 
 You can download a
 [zip from GitHub](https://github.com/DanielAGW/wp-first-letter-avatar/archive/master.zip) and upload it using the WordPress
-plugin uploader or manually unzip it and place in ```wp-content/plugins/```. 
+plugin uploader or manually unzip it and place in ```wp-content/plugins/```. You can also download it from [WordPress.org Plugin Directory](https://wordpress.org/plugins/wp-first-letter-avatar/).
+
 
 ## Configuration
 
