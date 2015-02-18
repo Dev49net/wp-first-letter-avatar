@@ -1,5 +1,6 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
+Version: 1.0
 Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
 Contributors: DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar 
