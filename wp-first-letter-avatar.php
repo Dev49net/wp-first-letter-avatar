@@ -3,13 +3,13 @@
  * Plugin Name: WP First Letter Avatar
  * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
  * Contributors: DanielAGW
- * Description: Sets custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
+ * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
  * Version: 1.0
  * Author: Daniel Wroblewski
  * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
  * Requires at least: 3.0.1
- * Tested up to: 4.1
+ * Tested up to: 4.1.1
  * Stable tag: trunk
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -41,6 +41,9 @@ class WP_First_Letter_Avatar {
 
 	public function __construct(){
 
+		// add Settings link to plugins page:
+		add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'wpfla_add_settings_link'));
+
 		// add filter to get_avatar but only when not in admin panel:
 		if (!is_admin()){
 			add_filter('get_avatar', array($this, 'set_avatar'), 10, 4);
@@ -70,6 +73,17 @@ class WP_First_Letter_Avatar {
 			$this->image_unknown = $options['wpfla_unknown_image'];
 
 		}
+
+	}
+
+
+
+	public function wpfla_add_settings_link($links){
+
+		// Add localised Settings link do plugin settings on plugins page:
+		$settings_link = '<a href="options-general.php?page=wp_first_letter_avatar">'.__("Settings", "default").'</a>';
+		array_unshift($links, $settings_link);
+		return $links;
 
 	}
 
