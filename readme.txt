@@ -5,14 +5,14 @@ Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
 Contributors: DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar 
 Requires at least: 3.0.1
-Tested up to: 4.1
+Tested up to: 4.1.1
 Stable tag: trunk
 Author: Daniel Wroblewski
 Author URI: https://github.com/DanielAGW
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Sets custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
+Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
 
 == Description ==
 
