@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
  * Contributors: DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
- * Version: 1.0
+ * Version: 1.1
  * Author: Daniel Wroblewski
  * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
@@ -89,7 +89,7 @@ class WP_First_Letter_Avatar {
 
 
 
-	public function set_avatar($avatar, $id_or_email, $size, $default, $alt){
+	public function set_avatar($avatar, $id_or_email, $size, $default, $alt = ''){
 
 		// create array with needed avatar parameters for easier passing to next method:
 		$avatar_params = array(
