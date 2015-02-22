@@ -68,6 +68,7 @@ Yes! By default, WP First Letter Avatar sets custom avatar only to users without
 
 = 1.2.1 =
 * Avatar is now in the right position in dashboard (in previous versions it used to be in bottom left corner instead of upper right corner)
+* Optimized database readings (for plugin settings)
 
 = 1.2 =
 * Added round avatars option - you can turn it on in plugin settings
@@ -81,7 +82,7 @@ Yes! By default, WP First Letter Avatar sets custom avatar only to users without
 == Upgrade Notice ==
 
 = 1.2.1 =
-This version fixes avatar placement in user dashboard - upgrade as soon as possible.
+This version fixes avatar placement in user dashboard and improves database reads - upgrade as soon as possible.
 
 = 1.2 =
 Added new feature (rounded avatars, can be turned on in plugin settings). Update not necessary.
