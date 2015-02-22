@@ -30,7 +30,7 @@ class WP_First_Letter_Avatar_Config {
 
 		register_setting( 'pluginPage', 'wpfla_settings' );
 
-		add_settings_section(
+		 add_settings_section(
 			'wpfla_pluginPage_section',
 			'Plugin configuration',
 			array($this, 'wpfla_settings_section_callback'),
@@ -73,6 +73,14 @@ class WP_First_Letter_Avatar_Config {
 			'wpfla_use_gravatar',
 			'Use Gravatar<br/>Default: check',
 			array($this, 'wpfla_use_gravatar_render'),
+			'pluginPage',
+			'wpfla_pluginPage_section'
+		);
+
+		add_settings_field(
+			'wpfla_round_avatars',
+			'Round avatars<br/>Default: uncheck',
+			array($this, 'wpfla_round_avatars_render'),
 			'pluginPage',
 			'wpfla_pluginPage_section'
 		);
@@ -136,9 +144,20 @@ class WP_First_Letter_Avatar_Config {
 
 
 
+	public function wpfla_round_avatars_render(){
+
+		$options = get_option('wpfla_settings');
+		?>
+		<input type='checkbox' name='wpfla_settings[wpfla_round_avatars]' <?php checked( $options['wpfla_round_avatars'], 1 ); ?> value='1' />
+	<?php
+
+	}
+
+
+
 	public function wpfla_settings_section_callback(){
 
-		echo 'Basic setup';
+		// leaving this in case I want to add something here in future...
 
 	}
 
@@ -179,6 +198,10 @@ class WP_First_Letter_Avatar_Config {
 			<p>
 				<strong>Use Gravatar</strong><br />
 				<span style="text-decoration: underline">Check</span>: use Gravatar when available; <span style="text-decoration: underline">Uncheck</span>: always use custom avatars.
+			</p>
+			<p>
+				<strong>Round avatars</strong><br />
+				<span style="text-decoration: underline">Check</span>: use rounded avatars; <span style="text-decoration: underline">Uncheck</span>: use standard avatars.
 			</p>
 			<p>In case of any problems, use the default values.</p>
 

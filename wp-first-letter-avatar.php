@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
  * Contributors: DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
- * Version: 1.1
+ * Version: 1.2
  * Author: Daniel Wroblewski
  * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
@@ -28,6 +28,7 @@ class WP_First_Letter_Avatar {
 	const AVATAR_SET = 'default'; // directory where avatars are stored
 	const LETTER_INDEX = 0;  // 0: first letter; 1: second letter; -1: last letter, etc.
 	const IMAGES_FORMAT = 'png';   // file format of the avatars
+	const ROUND_AVATARS = FALSE;     // TRUE: use rounded avatars; FALSE: dont use round avatars
 	const IMAGE_UNKNOWN = 'mystery';    // file name (without extension) of the avatar used for users with usernames beginning
 										// with symbol other than one from a-z range
 	// variables duplicating const values (will be changed in constructor after reading config from DB):
@@ -35,6 +36,7 @@ class WP_First_Letter_Avatar {
 	private $avatar_set = self::AVATAR_SET;
 	private $letter_index = self::LETTER_INDEX;
 	private $images_format = self::IMAGES_FORMAT;
+	private $round_avatars = self::ROUND_AVATARS;
 	private $image_unknown = self::IMAGE_UNKNOWN;
 
 
@@ -43,6 +45,9 @@ class WP_First_Letter_Avatar {
 
 		// add Settings link to plugins page:
 		add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'wpfla_add_settings_link'));
+
+		// add stylesheets/scripts:
+		add_action('wp_enqueue_scripts', array($this, 'wpfla_add_scripts'));
 
 		// add filter to get_avatar but only when not in admin panel:
 		if (!is_admin()){
@@ -59,6 +64,7 @@ class WP_First_Letter_Avatar {
 				'wpfla_avatar_set' => self::AVATAR_SET,
 				'wpfla_letter_index' => self::LETTER_INDEX,
 				'wpfla_file_format' => self::IMAGES_FORMAT,
+				'wpfla_round_avatars' => self::ROUND_AVATARS,
 				'wpfla_unknown_image' => self::IMAGE_UNKNOWN
 			);
 			add_option('wpfla_settings', $settings);
@@ -70,6 +76,7 @@ class WP_First_Letter_Avatar {
 			$this->avatar_set = $options['wpfla_avatar_set'];
 			$this->letter_index = $options['wpfla_letter_index'];
 			$this->images_format = $options['wpfla_file_format'];
+			$this->round_avatars = $options['wpfla_round_avatars'];
 			$this->image_unknown = $options['wpfla_unknown_image'];
 
 		}
@@ -80,10 +87,19 @@ class WP_First_Letter_Avatar {
 
 	public function wpfla_add_settings_link($links){
 
-		// Add localised Settings link do plugin settings on plugins page:
+		// add localised Settings link do plugin settings on plugins page:
 		$settings_link = '<a href="options-general.php?page=wp_first_letter_avatar">'.__("Settings", "default").'</a>';
 		array_unshift($links, $settings_link);
 		return $links;
+
+	}
+
+
+
+	public function wpfla_add_scripts(){
+
+		// add main CSS file:
+		wp_enqueue_style('prefix-style', plugins_url('css/style.css', __FILE__) );
 
 	}
 
@@ -167,7 +183,13 @@ class WP_First_Letter_Avatar {
 
 	private function output_img($avatar, $size, $alt){
 
-		$output_data = "<img alt='{$alt}' src='{$avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+		// prepare extra classes for <img> tag depending on plugin settings:
+		$extra_img_class = '';
+		if ($this->round_avatars == TRUE){
+			$extra_img_class .= 'round-avatars';
+		}
+
+		$output_data = "<img alt='{$alt}' src='{$avatar}' class='avatar avatar-{$size} photo wpfla {$extra_img_class}' height='{$size}' width='{$size}' />";
 
 		// echo the <img> tag:
 		echo $output_data;

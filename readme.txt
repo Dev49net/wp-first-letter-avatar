@@ -1,6 +1,6 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
-Version: 1.1
+Version: 1.2
 Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
 Contributors: DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar 
@@ -16,7 +16,7 @@ Set custom avatars for users with no Gravatar. The avatar will be a first (or an
 
 == Description ==
 
-WP First Letter Avatar **sets custom avatars for users without Gravatar**. The avatar will be a first letter of the users's name, just like in Discourse (<http://www.discourse.org/>). You can also configure plugin to use any other letter to set custom avatar. 
+WP First Letter Avatar **sets custom avatars for users without Gravatar**. The avatar will be a first letter of the users's name, just like in [Discourse](http://www.discourse.org/). You can also configure plugin to use any other letter to set custom avatar.
 
 WP First Letter Avatar includes a set of **beautiful, colorful letter avatars** in many sizes. Optimal size will be chosen by the plugin in order to display high quality avatar and not download, for example, big 512px avatars when only 48px is needed... **PSD template** for avatar is also included - it's a simple Stag Sans Thin letter. 
 
@@ -26,7 +26,7 @@ By default, custom avatar will be set only to users without Gravatars, but you c
 
 WP First Letter Avatar helps you **bring more colors** into your blog. Plus, your readers will be more **willing to comment on your posts**, since they can actually relate to these avatars much better than to Monsters or Mystery Man.
 
-All images were compressed using the fantastic <https://tinypng.com/>, so avatars are **incredibly light and ultra-high quality**.
+All images were compressed using the fantastic [TinyPNG](https://tinypng.com/), so avatars are **incredibly light and ultra-high quality**.
 
 You can [fork the plugin on GitHub](https://github.com/DanielAGW/wp-first-letter-avatar).
 
@@ -62,12 +62,26 @@ Yes! By default, WP First Letter Avatar sets custom avatar only to users without
 1. This shows three comments with first letter avatars (these commenters don't have their Gravatars) and one with standard Gravatar.
 2. Two comments with custom first letter avatars.
 3. Set of alphabet avatars in WP First Letter Avatar.
-4. Very simple settings page for WP First Letter Avatar. You can decide which character should be used to specify avatar, turn off Gravatar, use custom avatar sets etc.
+4. Very simple settings page for WP First Letter Avatar. You can decide which character should be used to specify avatar, turn off Gravatar, use custom avatar sets, use rounded avatars etc.
 
 == Changelog ==
+
+= 1.2 =
+* Added round avatars option - you can turn it on in plugin settings
 
 = 1.1 =
 * Fixed PHP "Missing argument" error
 
 = 1.0 =
-* First WP First Letter Avatar release.
+* First WP First Letter Avatar release
+
+== Upgrade Notice ==
+
+= 1.2 =
+Added new feature (rounded avatars, can be turned on in plugin setttings). Update not necessary.
+
+= 1.1 =
+This version fixes a PHP "Missing argument" error - upgrade as soon as possible.
+
+= 1.0 =
+First WP First Letter Avatar release.

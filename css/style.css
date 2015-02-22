@@ -1,0 +1,20 @@
+/*
+    Plugin: WP First Letter Avatar
+    Plugin website: https://github.com/DanielAGW/wp-first-letter-avatar
+*/
+
+
+/* WP First Letter Avatar */
+
+.wpfla.round-avatars {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+
+    /* Uncomment this for fancy shadow around your avatars
+       (you can also change the shadow parameters!):
+        -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, .5);
+        -moz-box-shadow: 0 0 4px rgba(0, 0, 0, .5);
+        box-shadow: 0 0 4px rgba(0, 0, 0, .5);
+    */
+}

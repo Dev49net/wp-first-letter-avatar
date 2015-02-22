@@ -55,6 +55,10 @@ Directory where avatars are stored.
 
 Check: use Gravatar when available; Uncheck: always use custom avatars.
 
+**Round avatars:**
+
+Check: use rounded avatars; Uncheck: use standard avatars.
+
 ## Issues
 If you notice any errors or have an idea for improving the plugin, please
 [open an issue](https://github.com/DanielAGW/wp-first-letter-avatar/issues?state=open).
