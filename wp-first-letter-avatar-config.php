@@ -7,6 +7,9 @@
 
 
 class WP_First_Letter_Avatar_Config {
+	
+	
+	private $wpfla_options;
 
 
 	public function __construct(){
@@ -18,9 +21,9 @@ class WP_First_Letter_Avatar_Config {
 
 
 
-	public function wpfla_add_admin_menu(  ) {
+	public function wpfla_add_admin_menu() {
 
-		add_options_page( 'WP First Letter Avatar', 'WP First Letter Avatar', 'manage_options', 'wp_first_letter_avatar', array($this, 'wpfla_options_page') );
+		add_options_page('WP First Letter Avatar', 'WP First Letter Avatar', 'manage_options', 'wp_first_letter_avatar', array($this, 'wpfla_options_page'));
 
 	}
 
@@ -28,7 +31,7 @@ class WP_First_Letter_Avatar_Config {
 
 	public function wpfla_settings_init(  ) {
 
-		register_setting( 'pluginPage', 'wpfla_settings' );
+		register_setting('pluginPage', 'wpfla_settings');
 
 		 add_settings_section(
 			'wpfla_pluginPage_section',
@@ -91,9 +94,8 @@ class WP_First_Letter_Avatar_Config {
 
 	public function wpfla_letter_index_render(){
 
-		$options = get_option('wpfla_settings');
 		?>
-		<input style="width:40px;" type='text' name='wpfla_settings[wpfla_letter_index]' value='<?php echo $options['wpfla_letter_index']; ?>' />
+		<input style="width:40px;" type='text' name='wpfla_settings[wpfla_letter_index]' value='<?php echo $this->wpfla_options['wpfla_letter_index']; ?>' />
 	<?php
 
 	}
@@ -102,9 +104,8 @@ class WP_First_Letter_Avatar_Config {
 
 	public function wpfla_file_format_render(){
 
-		$options = get_option('wpfla_settings');
 		?>
-		<input style="width: 100px;" type='text' name='wpfla_settings[wpfla_file_format]' value='<?php echo $options['wpfla_file_format']; ?>' />
+		<input style="width: 100px;" type='text' name='wpfla_settings[wpfla_file_format]' value='<?php echo $this->wpfla_options['wpfla_file_format']; ?>' />
 	<?php
 
 	}
@@ -113,9 +114,8 @@ class WP_First_Letter_Avatar_Config {
 
 	public function wpfla_unknown_image_render(){
 
-		$options = get_option('wpfla_settings');
 		?>
-		<input type='text' name='wpfla_settings[wpfla_unknown_image]' value='<?php echo $options['wpfla_unknown_image']; ?>' />
+		<input type='text' name='wpfla_settings[wpfla_unknown_image]' value='<?php echo $this->wpfla_options['wpfla_unknown_image']; ?>' />
 	<?php
 
 	}
@@ -124,9 +124,8 @@ class WP_First_Letter_Avatar_Config {
 
 	public function wpfla_avatar_set_render(){
 
-		$options = get_option('wpfla_settings');
 		?>
-		<input type='text' name='wpfla_settings[wpfla_avatar_set]' value='<?php echo $options['wpfla_avatar_set']; ?>' />
+		<input type='text' name='wpfla_settings[wpfla_avatar_set]' value='<?php echo $this->wpfla_options['wpfla_avatar_set']; ?>' />
 	<?php
 
 	}
@@ -135,9 +134,8 @@ class WP_First_Letter_Avatar_Config {
 
 	public function wpfla_use_gravatar_render(){
 
-		$options = get_option('wpfla_settings');
 		?>
-		<input type='checkbox' name='wpfla_settings[wpfla_use_gravatar]' <?php checked( $options['wpfla_use_gravatar'], 1 ); ?> value='1' />
+		<input type='checkbox' name='wpfla_settings[wpfla_use_gravatar]' <?php checked( $this->wpfla_options['wpfla_use_gravatar'], 1 ); ?> value='1' />
 	<?php
 
 	}
@@ -146,9 +144,8 @@ class WP_First_Letter_Avatar_Config {
 
 	public function wpfla_round_avatars_render(){
 
-		$options = get_option('wpfla_settings');
 		?>
-		<input type='checkbox' name='wpfla_settings[wpfla_round_avatars]' <?php checked( $options['wpfla_round_avatars'], 1 ); ?> value='1' />
+		<input type='checkbox' name='wpfla_settings[wpfla_round_avatars]' <?php checked( $this->wpfla_options['wpfla_round_avatars'], 1 ); ?> value='1' />
 	<?php
 
 	}
@@ -157,7 +154,7 @@ class WP_First_Letter_Avatar_Config {
 
 	public function wpfla_settings_section_callback(){
 
-		// leaving this in case I want to add something here in future...
+		$this->wpfla_options = get_option('wpfla_settings');
 
 	}
 

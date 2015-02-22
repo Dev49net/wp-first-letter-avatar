@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
  * Contributors: DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
- * Version: 1.2
+ * Version: 1.2.1
  * Author: Daniel Wroblewski
  * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
@@ -121,15 +121,34 @@ class WP_First_Letter_Avatar {
 			$user_email = $this->get_email($id_or_email);
 			if ($this->gravatar_exists($user_email)){
 				// gravatar is set, output the gravatar img
-				$this->output_gravatar_img($user_email, $size, $alt);
+				$avatar_output = $this->output_gravatar_img($user_email, $size, $alt);
 			} else {
 				// gravatar is not set, proceed to choose custom avatar:
-				$this->choose_custom_avatar($avatar_params);
+				$avatar_output = $this->choose_custom_avatar($avatar_params);
 			}
 		} else {
 			// Gravatar is not used as default option, only custom avatars will be used; proceed to choose custom avatar:
-			$this->choose_custom_avatar($avatar_params);
+			$avatar_output = $this->choose_custom_avatar($avatar_params);
 		}
+
+		return $avatar_output;
+
+	}
+
+
+
+	private function output_img($avatar, $size, $alt){
+
+		// prepare extra classes for <img> tag depending on plugin settings:
+		$extra_img_class = '';
+		if ($this->round_avatars == TRUE){
+			$extra_img_class .= 'round-avatars';
+		}
+
+		$output_data = "<img alt='{$alt}' src='{$avatar}' class='avatar avatar-{$size} photo wpfla {$extra_img_class}' height='{$size}' width='{$size}' />";
+
+		// echo the <img> tag:
+		return $output_data;
 
 	}
 
@@ -175,26 +194,7 @@ class WP_First_Letter_Avatar {
 		$avatar = plugins_url() . $plugin_directory . self::IMAGES_PATH . $avatar_set .  $custom_avatar_size . $file_name . $images_format;
 
 		// output the final HTML img code:
-		$this->output_img($avatar, $size, $alt);
-
-	}
-
-
-
-	private function output_img($avatar, $size, $alt){
-
-		// prepare extra classes for <img> tag depending on plugin settings:
-		$extra_img_class = '';
-		if ($this->round_avatars == TRUE){
-			$extra_img_class .= 'round-avatars';
-		}
-
-		$output_data = "<img alt='{$alt}' src='{$avatar}' class='avatar avatar-{$size} photo wpfla {$extra_img_class}' height='{$size}' width='{$size}' />";
-
-		// echo the <img> tag:
-		echo $output_data;
-
-		return;
+		return $this->output_img($avatar, $size, $alt);
 
 	}
 
@@ -208,7 +208,7 @@ class WP_First_Letter_Avatar {
 		$avatar .= "?s=$size&d=mm&r=g";
 
 		// output gravatar:
-		$this->output_img($avatar, $size, $alt);
+		return $this->output_img($avatar, $size, $alt);
 
 	}
 

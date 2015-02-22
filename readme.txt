@@ -1,6 +1,6 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
-Version: 1.2
+Version: 1.2.1
 Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
 Contributors: DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar 
@@ -66,6 +66,9 @@ Yes! By default, WP First Letter Avatar sets custom avatar only to users without
 
 == Changelog ==
 
+= 1.2.1 =
+* Avatar is now in the right position in dashboard (in previous versions it used to be in bottom left corner instead of upper right corner)
+
 = 1.2 =
 * Added round avatars option - you can turn it on in plugin settings
 
@@ -77,8 +80,11 @@ Yes! By default, WP First Letter Avatar sets custom avatar only to users without
 
 == Upgrade Notice ==
 
+= 1.2.1 =
+This version fixes avatar placement in user dashboard - upgrade as soon as possible.
+
 = 1.2 =
-Added new feature (rounded avatars, can be turned on in plugin setttings). Update not necessary.
+Added new feature (rounded avatars, can be turned on in plugin settings). Update not necessary.
 
 = 1.1 =
 This version fixes a PHP "Missing argument" error - upgrade as soon as possible.
