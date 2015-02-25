@@ -1,6 +1,6 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
-Version: 1.2.1
+Version: 1.2.2
 Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
 Contributors: DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar 
@@ -57,6 +57,9 @@ Of course! This can be done in plugin settings.
 = I don't want to use Gravatar at all. Can I disable it? =
 Yes! By default, WP First Letter Avatar sets custom avatar only to users without Gravatar, but in plugin settings you can disable it and use custom avatar for everybody.
 
+= Can avatars be round, like in Google+? =
+Yes. In 1.2 version this feature has been introduced - just go to plugin settings and click Round avatars.
+
 == Screenshots ==
 
 1. This shows three comments with first letter avatars (these commenters don't have their Gravatars) and one with standard Gravatar.
@@ -65,6 +68,9 @@ Yes! By default, WP First Letter Avatar sets custom avatar only to users without
 4. Very simple settings page for WP First Letter Avatar. You can decide which character should be used to specify avatar, turn off Gravatar, use custom avatar sets, use rounded avatars etc.
 
 == Changelog ==
+
+= 1.2.2 =
+* Fixed conflicts with some comment systems (such as wpDiscuz)
 
 = 1.2.1 =
 * Avatar is now in the right position in dashboard (in previous versions it used to be in bottom left corner instead of upper right corner)
@@ -81,8 +87,11 @@ Yes! By default, WP First Letter Avatar sets custom avatar only to users without
 
 == Upgrade Notice ==
 
+= 1.2.2 =
+This version fixes conflicts with some comment systems (such as wpDiscuz) and slightly improves plugin performance. Update recommended.
+
 = 1.2.1 =
-This version fixes avatar placement in user dashboard and improves database reads - upgrade as soon as possible.
+This version fixes avatar placement in user dashboard and improves database reads - update as soon as possible.
 
 = 1.2 =
 Added new feature (rounded avatars, can be turned on in plugin settings). Update not necessary.

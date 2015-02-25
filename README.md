@@ -60,5 +60,5 @@ Check: use Gravatar when available; Uncheck: always use custom avatars.
 Check: use rounded avatars; Uncheck: use standard avatars.
 
 ## Issues
-If you notice any errors or have an idea for improving the plugin, please
-[open an issue](https://github.com/DanielAGW/wp-first-letter-avatar/issues?state=open).
+If you notice any errors or have an idea for improving the plugin, please open an
+[issue](https://github.com/DanielAGW/wp-first-letter-avatar/issues) or write on [WordPress plugin support forum](https://wordpress.org/support/plugin/wp-first-letter-avatar).

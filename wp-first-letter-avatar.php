@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
  * Contributors: DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: Daniel Wroblewski
  * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
@@ -88,7 +88,7 @@ class WP_First_Letter_Avatar {
 	public function wpfla_add_settings_link($links){
 
 		// add localised Settings link do plugin settings on plugins page:
-		$settings_link = '<a href="options-general.php?page=wp_first_letter_avatar">'.__("Settings", "default").'</a>';
+		$settings_link = '<a href="options-general.php?page=wp_first_letter_avatar">'.__('Settings', 'default').'</a>';
 		array_unshift($links, $settings_link);
 		return $links;
 
@@ -105,30 +105,30 @@ class WP_First_Letter_Avatar {
 
 
 
-	public function set_avatar($avatar, $id_or_email, $size, $default, $alt = ''){
+	public function set_avatar($avatar, $id_or_email, $size = '96', $default, $alt = ''){ // only size and alt arguments are used
 
-		// create array with needed avatar parameters for easier passing to next method:
-		$avatar_params = array(
-			'avatar' => $avatar,
-			'id_or_email' => $id_or_email,
-			'size' => $size,
-			'alt' => $alt
-		);
+		// get comment information:
+		$comment_author = get_comment_author();
+		$comment_email = get_comment_author_email();
 
-		// First check whether Gravatar should be used at all:
+		// if, for some reason, there is no comment author, use email instead:
+		if (empty($comment_author)){
+			$comment_author = $comment_email;
+		}
+
+		// first check whether Gravatar should be used at all:
 		if ($this->use_gravatar == TRUE){
-			// Gravatar used as default option, now check whether user's gravatar is set:
-			$user_email = $this->get_email($id_or_email);
-			if ($this->gravatar_exists($user_email)){
+			// gravatar used as default option, now check whether user's gravatar is set:
+			if ($this->gravatar_exists($comment_email)){
 				// gravatar is set, output the gravatar img
-				$avatar_output = $this->output_gravatar_img($user_email, $size, $alt);
+				$avatar_output = $this->output_gravatar_img($comment_email, $size, $alt);
 			} else {
 				// gravatar is not set, proceed to choose custom avatar:
-				$avatar_output = $this->choose_custom_avatar($avatar_params);
+				$avatar_output = $this->choose_custom_avatar($comment_author, $size, $alt);
 			}
 		} else {
-			// Gravatar is not used as default option, only custom avatars will be used; proceed to choose custom avatar:
-			$avatar_output = $this->choose_custom_avatar($avatar_params);
+			// gravatar is not used as default option, only custom avatars will be used; proceed to choose custom avatar:
+			$avatar_output = $this->choose_custom_avatar($comment_author, $size, $alt);
 		}
 
 		return $avatar_output;
@@ -137,7 +137,7 @@ class WP_First_Letter_Avatar {
 
 
 
-	private function output_img($avatar, $size, $alt){
+	private function output_img($avatar_uri, $size, $alt){
 
 		// prepare extra classes for <img> tag depending on plugin settings:
 		$extra_img_class = '';
@@ -145,34 +145,29 @@ class WP_First_Letter_Avatar {
 			$extra_img_class .= 'round-avatars';
 		}
 
-		$output_data = "<img alt='{$alt}' src='{$avatar}' class='avatar avatar-{$size} photo wpfla {$extra_img_class}' height='{$size}' width='{$size}' />";
+		$output_data = "<img alt='{$alt}' src='{$avatar_uri}' class='avatar avatar-{$size} photo wpfla {$extra_img_class}' height='{$size}' width='{$size}' />";
 
-		// echo the <img> tag:
+		// return the complete <img> tag:
 		return $output_data;
 
 	}
 
 
 
-	private function choose_custom_avatar($avatar_params){
+	private function choose_custom_avatar($comment_author, $size, $alt){
 
-		// extract parameters to separate variables for convenience:
-		$id_or_email = $avatar_params['id_or_email'];
-		$avatar = $avatar_params['avatar'];
-		$size = $avatar_params['size'];
-		$alt = $avatar_params['alt'];
-
-		// lower-cased file name based on the letter retrieved from the name:
-		$file_name = strtolower($this->get_letter($id_or_email));
-		if ($file_name === FALSE){
-			// if name returned false, set file name to default unknown image
+		// get picture filename (and lowercase it) from commenter name:
+		$file_name = substr($comment_author, $this->letter_index, 1); // get one letter counting from letter_index
+		$file_name = strtolower($file_name); // lowercase it...
+		// if, for some reason, the result is empty, set file_name to default unknown image:
+		if (empty($file_name)){
 			$file_name = $this->image_unknown;
 		}
 
 		// create array with allowed character range (in this case it is a-z range):
 		$allowed_chars = range('a', 'z');
 		// check if the file name meets the requirement; if it doesn't - set it to unknown
-		if (!in_array($file_name, $allowed_chars)) {
+		if (!in_array($file_name, $allowed_chars)){
 			$file_name = $this->image_unknown;
 		}
 
@@ -183,100 +178,33 @@ class WP_First_Letter_Avatar {
 		else if ($size > 128 && $size <= 256) $custom_avatar_size = '256';
 		else $custom_avatar_size = '512';
 
-		// add slashes for convenience (these vars will be used to create path to custom avatar)
-		$custom_avatar_size .= '/';
-		$avatar_set = '/' . $this->avatar_set . '/';
-		$images_format = '.' . $this->images_format; // add dot before file extension
-
-		// get main plugin directory and add leading and trailing slashes:
-		$plugin_directory = '/' . dirname(plugin_basename(__FILE__)) . '/';
-		// avatar var will look like this: http://yourblog.com/wp-content/plugins/wp-first-letter-avatar/images/default/96/k.png
-		$avatar = plugins_url() . $plugin_directory . self::IMAGES_PATH . $avatar_set .  $custom_avatar_size . $file_name . $images_format;
+		// create file path - avatar_path variable will look something like this:
+		// http://yourblog.com/wp-content/plugins/wp-first-letter-avatar/images/default/96/k.png):
+		$avatar_uri =
+			plugins_url() . '/'
+			. dirname(plugin_basename(__FILE__)) . '/'
+			. self::IMAGES_PATH . '/'
+			. $this->avatar_set . '/'
+			. $custom_avatar_size . '/'
+			. $file_name . '.'
+			. $this->images_format;
 
 		// output the final HTML img code:
-		return $this->output_img($avatar, $size, $alt);
+		return $this->output_img($avatar_uri, $size, $alt);
 
 	}
 
 
 
-	private function output_gravatar_img($email, $size, $alt){
+	private function output_gravatar_img($comment_email, $size, $alt){
 
 		// email to gravatar url:
-		$avatar = self::GRAVATAR_URL;
-		$avatar .= md5(strtolower(trim($email)));
-		$avatar .= "?s=$size&d=mm&r=g";
+		$avatar_uri = self::GRAVATAR_URL;
+		$avatar_uri .= md5(strtolower(trim($comment_email)));
+		$avatar_uri .= "?s={$size}&d=mm&r=g";
 
 		// output gravatar:
-		return $this->output_img($avatar, $size, $alt);
-
-	}
-
-
-
-	private function get_email($id_or_email){
-
-		/* retrieve and return email from passed parameter - it can be user id (int/string), email (string) or comment object
-		   borrowed from wp-includes/pluggable.php */
-
-		$email = '';
-		if (is_numeric($id_or_email)){
-			$id = (int) $id_or_email;
-			$user = get_userdata($id);
-			if ($user)
-				$email = $user->user_email;
-		} elseif (is_object($id_or_email)){
-			$allowed_comment_types = apply_filters('get_avatar_comment_types', array('comment'));
-			if (!empty($id_or_email->comment_type) && !in_array($id_or_email->comment_type, (array) $allowed_comment_types))
-				return FALSE;
-			if (!empty($id_or_email->user_id)){
-				$id = (int) $id_or_email->user_id;
-				$user = get_userdata($id);
-				if ($user)
-					$email = $user->user_email;
-			} elseif (!empty($id_or_email->comment_author_email)){
-				$email = $id_or_email->comment_author_email;
-			}
-		} else {
-			$email = $id_or_email;
-		}
-
-		return $email;
-
-	}
-
-
-
-	private function get_letter($id_or_email){
-
-		/* retrieve and return letter from passed parameter
-		   return FALSE if letter cannot be retrieved */
-
-		$name = '';
-		if (is_numeric($id_or_email)){
-			$id = (int) $id_or_email;
-			$user = get_userdata($id);
-			if ($user)
-				$name = $user->display_name;
-		} elseif (is_object($id_or_email)){
-			$allowed_comment_types = apply_filters('get_avatar_comment_types', array('comment'));
-			if (!empty($id_or_email->comment_type) && !in_array($id_or_email->comment_type, (array) $allowed_comment_types))
-				return FALSE;
-			if (!empty($id_or_email->user_id)){
-				$id = (int) $id_or_email->user_id;
-				$user = get_userdata($id);
-				if ($user)
-					$name = $user->display_name;
-			} elseif (!empty($id_or_email->comment_author)){
-				$name = $id_or_email->comment_author;
-			}
-		} else {
-			return FALSE;
-		}
-
-		// get specified letter from the name var and return it:
-		$letter = substr($name, $this->letter_index, 1);
-		return $letter;
+		return $this->output_img($avatar_uri, $size, $alt);
 
 	}
 
@@ -299,9 +227,9 @@ class WP_First_Letter_Avatar {
 		}
 
 		if ($data == '200'){ // response code is 200, gravatar exists, return true
-			return true;
+			return TRUE;
 		} else { // response code is not 200, gravatar doesn't exist, return false
-			return false;
+			return FALSE;
 		}
 
 	}

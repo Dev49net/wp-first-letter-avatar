@@ -21,7 +21,7 @@ class WP_First_Letter_Avatar_Config {
 
 
 
-	public function wpfla_add_admin_menu() {
+	public function wpfla_add_admin_menu(){
 
 		add_options_page('WP First Letter Avatar', 'WP First Letter Avatar', 'manage_options', 'wp_first_letter_avatar', array($this, 'wpfla_options_page'));
 
@@ -29,7 +29,7 @@ class WP_First_Letter_Avatar_Config {
 
 
 
-	public function wpfla_settings_init(  ) {
+	public function wpfla_settings_init(){
 
 		register_setting('pluginPage', 'wpfla_settings');
 
@@ -160,7 +160,7 @@ class WP_First_Letter_Avatar_Config {
 
 
 
-	public function wpfla_options_page(  ) {
+	public function wpfla_options_page(){
 
 		?>
 		<form action='options.php' method='post'>
