@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
  * Contributors: DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
- * Version: 1.2.2
+ * Version: 1.2.3
  * Author: Daniel Wroblewski
  * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
@@ -51,8 +51,16 @@ class WP_First_Letter_Avatar {
 
 		// add filter to get_avatar but only when not in admin panel:
 		if (!is_admin()){
-			add_filter('get_avatar', array($this, 'set_avatar'), 10, 4);
+			add_filter('get_avatar', array($this, 'set_comment_avatar'), 10, 5);
 		}
+		// use different function for top user/admin bar and remove it after it's been rendered:
+		add_action('admin_bar_menu', function(){
+			add_filter('get_avatar', array($this, 'set_userbar_avatar'), 10, 5);
+		},0);
+		add_action('wp_after_admin_bar_render', function(){
+			remove_filter('get_avatar', array($this, 'set_userbar_avatar'), 10);
+		});
+
 
 		// get plugin configuration from database:
 		$options = get_option('wpfla_settings');
@@ -105,31 +113,103 @@ class WP_First_Letter_Avatar {
 
 
 
-	public function set_avatar($avatar, $id_or_email, $size = '96', $default, $alt = ''){ // only size and alt arguments are used
+	private function set_avatar($name, $email, $size, $alt){
 
-		// get comment information:
-		$comment_author = get_comment_author();
-		$comment_email = get_comment_author_email();
-
-		// if, for some reason, there is no comment author, use email instead:
-		if (empty($comment_author)){
-			$comment_author = $comment_email;
+		if (empty($name)){ // if, for some reason, there is no name, use email instead
+			$name = $email;
+		} else if (empty($email)){ // and if no email, use user/guest name
+			$email = $name;
 		}
 
 		// first check whether Gravatar should be used at all:
 		if ($this->use_gravatar == TRUE){
 			// gravatar used as default option, now check whether user's gravatar is set:
-			if ($this->gravatar_exists($comment_email)){
+			if ($this->gravatar_exists($email)){
 				// gravatar is set, output the gravatar img
-				$avatar_output = $this->output_gravatar_img($comment_email, $size, $alt);
+				$avatar_output = $this->output_gravatar_img($email, $size, $alt);
 			} else {
 				// gravatar is not set, proceed to choose custom avatar:
-				$avatar_output = $this->choose_custom_avatar($comment_author, $size, $alt);
+				$avatar_output = $this->choose_custom_avatar($name, $size, $alt);
 			}
 		} else {
 			// gravatar is not used as default option, only custom avatars will be used; proceed to choose custom avatar:
-			$avatar_output = $this->choose_custom_avatar($comment_author, $size, $alt);
+			$avatar_output = $this->choose_custom_avatar($name, $size, $alt);
 		}
+
+		return $avatar_output;
+
+	}
+
+
+
+	public function set_comment_avatar($avatar, $id_or_email, $size = '96', $default, $alt = ''){
+
+		// create two main variables:
+		$name = '';
+		$email = '';
+
+		// check if it's a comment:
+		$comment_id = get_comment_ID();
+
+		if ($comment_id === NULL){ // if it's not a regular comment, use $id_or_email to get more data
+
+			if (is_numeric($id_or_email)){ // if id_or_email represents user id, get user by id
+				$id = (int) $id_or_email;
+				$user = get_user_by('id', $id);
+			} else if (is_object($id_or_email)){ // if id_or_email represents an object
+				if (!empty($id_or_email->user_id)){  // if there we can get user_id from the object, get user by id
+					$id = (int) $id_or_email->user_id;
+					$user = get_user_by('id', $id);
+				}
+			} else { // id_or_email is not user_id and is not an object, then it must be an email
+				$user = get_user_by('email', $id_or_email);
+			}
+
+			if ($user && is_object($user)){ // if commenter is a registered user...
+				$name = $user->data->display_name;
+				$email = $user->data->user_email;
+			} else { // if commenter is not a registered user, we have to try various fallbacks
+				$post_id = get_the_ID();
+				if ($post_id !== NULL){ // if this actually is a post...
+					$post_data = array('name' => '', 'email' => '');
+					// first we try for bbPress:
+					$post_data['name'] = get_post_meta($post_id, '_bbp_anonymous_name', TRUE);
+					$post_data['email'] = get_post_meta($post_id, '_bbp_anonymous_email', TRUE);
+					if (!empty($post_data)){ // we have some post data...
+						$name = $post_data['name'];
+						$email = $post_data['email'];
+					}
+				} else { // nothing else to do, assign email from id_or_email to email and later use it as name
+					if (!empty($id_or_email)){
+						$email = $id_or_email;
+					}
+				}
+			}
+
+		} else { // if it's a standard comment, use basic comment functions to retrive info
+
+			$name = get_comment_author();
+			$email = get_comment_author_email();
+
+		}
+
+		$avatar_output = $this->set_avatar($name, $email, $size, $alt);
+
+		return $avatar_output;
+
+	}
+
+
+
+	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default, $alt = ''){ // only size and alt arguments are used
+
+		// get user information:
+		global $current_user;
+		get_currentuserinfo();
+		$name = $current_user->display_name;
+		$email = $current_user->user_email;
+
+		$avatar_output = $this->set_avatar($name, $email, $size, $alt);
 
 		return $avatar_output;
 

@@ -1,6 +1,6 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
-Version: 1.2.2
+Version: 1.2.3
 Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
 Contributors: DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar 
@@ -69,6 +69,10 @@ Yes. In 1.2 version this feature has been introduced - just go to plugin setting
 
 == Changelog ==
 
+= 1.2.3 =
+* Improved avatar appearance on top admin/user bar
+* Added full compatibility with bbPress plugin
+
 = 1.2.2 =
 * Fixed conflicts with some comment systems (such as wpDiscuz)
 
@@ -86,6 +90,9 @@ Yes. In 1.2 version this feature has been introduced - just go to plugin setting
 * First WP First Letter Avatar release
 
 == Upgrade Notice ==
+
+= 1.2.3 =
+This version introduces full compatibility with bbPress and fixes some issues with avatars on user/admin bar. Update recommended.
 
 = 1.2.2 =
 This version fixes conflicts with some comment systems (such as wpDiscuz) and slightly improves plugin performance. Update recommended.
