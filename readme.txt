@@ -12,7 +12,7 @@ Author URI: https://github.com/DanielAGW
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
+Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name.
 
 == Description ==
 
