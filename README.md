@@ -17,12 +17,16 @@ on your posts since they can actually relate to these avatars much better than t
 
 WP First Letter Avatar includes a set of beautiful, colorful letter avatars in many sizes. Optimal size will be chosen 
 by the plugin in order to display high quality avatar and not download, for example, big 512px avatars when only 48px is
-needed... PSD template for avatar is also included - it's a simple Stag Sans Thin letter. 
+needed... PSD template for avatar is also included. 
 
-Plugin is configurable - you can disable Gravatar, choose different letter, use custom sets of avatars etc.
+Plugin is configurable - you can disable Gravatar, choose different letter, use custom sets of avatars, use rounded avatars etc.
 
 All images were compressed using the fantastic [TinyPNG](https://tinypng.com/), so avatars are incredibly light and ultra-high 
 quality.
+
+## Compatibility with other plugins
+
+WP First Letter Avatar is fully compatible with [bbPress](https://bbpress.org/). For [BuddyPress](https://buddypress.org/) compatibility please use my other plugin [BuddyPress First Letter Avatar](https://github.com/DanielAGW/buddypress-first-letter-avatar).
 
 ## Installation
 

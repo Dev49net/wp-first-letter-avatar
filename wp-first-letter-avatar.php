@@ -3,8 +3,8 @@
  * Plugin Name: WP First Letter Avatar
  * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
  * Contributors: DanielAGW
- * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name, just like in Discourse.
- * Version: 1.2.3
+ * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name.
+ * Version: 1.2.4
  * Author: Daniel Wroblewski
  * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
@@ -20,24 +20,24 @@
 class WP_First_Letter_Avatar {
 
 	// Setup (these values always stay the same):
-	const IMAGES_PATH = 'images'; // avatars root directory
-	const GRAVATAR_URL = 'https://secure.gravatar.com/avatar/';    // default url for gravatar - we're using HTTPS to avoid annoying warnings
+	const WPFLA_IMAGES_PATH = 'images'; // avatars root directory
+	const WPFLA_GRAVATAR_URL = 'https://secure.gravatar.com/avatar/';    // default url for gravatar - we're using HTTPS to avoid annoying warnings
 
 	// Default configuration (this is the default configuration only for the first plugin usage):
-	const USE_GRAVATAR = TRUE;  // TRUE: if user has Gravatar, use it; FALSE: use custom avatars even when gravatar is set
-	const AVATAR_SET = 'default'; // directory where avatars are stored
-	const LETTER_INDEX = 0;  // 0: first letter; 1: second letter; -1: last letter, etc.
-	const IMAGES_FORMAT = 'png';   // file format of the avatars
-	const ROUND_AVATARS = FALSE;     // TRUE: use rounded avatars; FALSE: dont use round avatars
-	const IMAGE_UNKNOWN = 'mystery';    // file name (without extension) of the avatar used for users with usernames beginning
+	const WPFLA_USE_GRAVATAR = TRUE;  // TRUE: if user has Gravatar, use it; FALSE: use custom avatars even when gravatar is set
+	const WPFLA_AVATAR_SET = 'default'; // directory where avatars are stored
+	const WPFLA_LETTER_INDEX = 0;  // 0: first letter; 1: second letter; -1: last letter, etc.
+	const WPFLA_IMAGES_FORMAT = 'png';   // file format of the avatars
+	const WPFLA_ROUND_AVATARS = FALSE;     // TRUE: use rounded avatars; FALSE: dont use round avatars
+	const WPFLA_IMAGE_UNKNOWN = 'mystery';    // file name (without extension) of the avatar used for users with usernames beginning
 										// with symbol other than one from a-z range
 	// variables duplicating const values (will be changed in constructor after reading config from DB):
-	private $use_gravatar = self::USE_GRAVATAR;
-	private $avatar_set = self::AVATAR_SET;
-	private $letter_index = self::LETTER_INDEX;
-	private $images_format = self::IMAGES_FORMAT;
-	private $round_avatars = self::ROUND_AVATARS;
-	private $image_unknown = self::IMAGE_UNKNOWN;
+	private $use_gravatar = self::WPFLA_USE_GRAVATAR;
+	private $avatar_set = self::WPFLA_AVATAR_SET;
+	private $letter_index = self::WPFLA_LETTER_INDEX;
+	private $images_format = self::WPFLA_IMAGES_FORMAT;
+	private $round_avatars = self::WPFLA_ROUND_AVATARS;
+	private $image_unknown = self::WPFLA_IMAGE_UNKNOWN;
 
 
 
@@ -68,12 +68,12 @@ class WP_First_Letter_Avatar {
 
 			// no records in DB, use default (const) values to save plugin config:
 			$settings = array(
-				'wpfla_use_gravatar' => self::USE_GRAVATAR,
-				'wpfla_avatar_set' => self::AVATAR_SET,
-				'wpfla_letter_index' => self::LETTER_INDEX,
-				'wpfla_file_format' => self::IMAGES_FORMAT,
-				'wpfla_round_avatars' => self::ROUND_AVATARS,
-				'wpfla_unknown_image' => self::IMAGE_UNKNOWN
+				'wpfla_use_gravatar' => self::WPFLA_USE_GRAVATAR,
+				'wpfla_avatar_set' => self::WPFLA_AVATAR_SET,
+				'wpfla_letter_index' => self::WPFLA_LETTER_INDEX,
+				'wpfla_file_format' => self::WPFLA_IMAGES_FORMAT,
+				'wpfla_round_avatars' => self::WPFLA_ROUND_AVATARS,
+				'wpfla_unknown_image' => self::WPFLA_IMAGE_UNKNOWN
 			);
 			add_option('wpfla_settings', $settings);
 
@@ -113,7 +113,7 @@ class WP_First_Letter_Avatar {
 
 
 
-	private function set_avatar($name, $email, $size, $alt){
+	private function set_avatar($name, $email, $size, $alt = ''){
 
 		if (empty($name)){ // if, for some reason, there is no name, use email instead
 			$name = $email;
@@ -193,7 +193,7 @@ class WP_First_Letter_Avatar {
 
 		}
 
-		$avatar_output = $this->set_avatar($name, $email, $size, $alt);
+		$avatar_output = $this->set_avatar($name, $email, $size, $alt = '');
 
 		return $avatar_output;
 
@@ -217,7 +217,7 @@ class WP_First_Letter_Avatar {
 
 
 
-	private function output_img($avatar_uri, $size, $alt){
+	private function output_img($avatar_uri, $size, $alt = ''){
 
 		// prepare extra classes for <img> tag depending on plugin settings:
 		$extra_img_class = '';
@@ -234,7 +234,7 @@ class WP_First_Letter_Avatar {
 
 
 
-	private function choose_custom_avatar($comment_author, $size, $alt){
+	private function choose_custom_avatar($comment_author, $size, $alt = ''){
 
 		// get picture filename (and lowercase it) from commenter name:
 		$file_name = substr($comment_author, $this->letter_index, 1); // get one letter counting from letter_index
@@ -263,7 +263,7 @@ class WP_First_Letter_Avatar {
 		$avatar_uri =
 			plugins_url() . '/'
 			. dirname(plugin_basename(__FILE__)) . '/'
-			. self::IMAGES_PATH . '/'
+			. self::WPFLA_IMAGES_PATH . '/'
 			. $this->avatar_set . '/'
 			. $custom_avatar_size . '/'
 			. $file_name . '.'
@@ -276,10 +276,10 @@ class WP_First_Letter_Avatar {
 
 
 
-	private function output_gravatar_img($comment_email, $size, $alt){
+	private function output_gravatar_img($comment_email, $size, $alt = ''){
 
 		// email to gravatar url:
-		$avatar_uri = self::GRAVATAR_URL;
+		$avatar_uri = self::WPFLA_GRAVATAR_URL;
 		$avatar_uri .= md5(strtolower(trim($comment_email)));
 		$avatar_uri .= "?s={$size}&d=mm&r=g";
 
@@ -318,7 +318,7 @@ class WP_First_Letter_Avatar {
 
 
 // create WP_First_Letter_Avatar object:
-$first_letter_avatar = new WP_First_Letter_Avatar();
+$wp_first_letter_avatar = new WP_First_Letter_Avatar();
 
 
 // require back-end of the plugin

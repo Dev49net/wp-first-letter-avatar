@@ -31,20 +31,20 @@ class WP_First_Letter_Avatar_Config {
 
 	public function wpfla_settings_init(){
 
-		register_setting('pluginPage', 'wpfla_settings');
+		register_setting('wpfla_pluginPage', 'wpfla_settings');
 
 		 add_settings_section(
 			'wpfla_pluginPage_section',
 			'Plugin configuration',
 			array($this, 'wpfla_settings_section_callback'),
-			'pluginPage'
+			'wpfla_pluginPage'
 		);
 
 		add_settings_field(
 			'wpfla_letter_index',
 			'Letter index<br/>Default: 0',
 			array($this, 'wpfla_letter_index_render'),
-			'pluginPage',
+			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
 
@@ -52,7 +52,7 @@ class WP_First_Letter_Avatar_Config {
 			'wpfla_file_format',
 			'File format<br/>Default: png',
 			array($this, 'wpfla_file_format_render'),
-			'pluginPage',
+			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
 
@@ -60,7 +60,7 @@ class WP_First_Letter_Avatar_Config {
 			'wpfla_unknown_image',
 			'Unknown image name<br/>Default: mystery',
 			array($this, 'wpfla_unknown_image_render'),
-			'pluginPage',
+			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
 
@@ -68,7 +68,7 @@ class WP_First_Letter_Avatar_Config {
 			'wpfla_avatar_set',
 			'Avatar set<br/>Default: default',
 			array($this, 'wpfla_avatar_set_render'),
-			'pluginPage',
+			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
 
@@ -76,7 +76,7 @@ class WP_First_Letter_Avatar_Config {
 			'wpfla_use_gravatar',
 			'Use Gravatar<br/>Default: check',
 			array($this, 'wpfla_use_gravatar_render'),
-			'pluginPage',
+			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
 
@@ -84,7 +84,7 @@ class WP_First_Letter_Avatar_Config {
 			'wpfla_round_avatars',
 			'Round avatars<br/>Default: uncheck',
 			array($this, 'wpfla_round_avatars_render'),
-			'pluginPage',
+			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
 
@@ -168,8 +168,8 @@ class WP_First_Letter_Avatar_Config {
 			<h2>WP First Letter Avatar</h2>
 
 			<?php
-			settings_fields( 'pluginPage' );
-			do_settings_sections( 'pluginPage' );
+			settings_fields('wpfla_pluginPage');
+			do_settings_sections('wpfla_pluginPage');
 			submit_button();
 			?>
 
@@ -204,7 +204,7 @@ class WP_First_Letter_Avatar_Config {
 
 			<hr />
 
-			<p style="text-align: right; margin-right:30px">WP First Letter Avatar was created by Daniel Wroblewski</p>
+			<p style="text-align: right; margin-right:30px">WP First Letter Avatar was created by <a href="https://github.com/DanielAGW/">Daniel Wroblewski</a></p>
 
 		</form>
 	<?php
@@ -216,4 +216,4 @@ class WP_First_Letter_Avatar_Config {
 
 
 // create WP_First_Letter_Avatar_Config object:
-$first_letter_avatar_config = new WP_First_Letter_Avatar_Config();
+$wp_first_letter_avatar_config = new WP_First_Letter_Avatar_Config();
