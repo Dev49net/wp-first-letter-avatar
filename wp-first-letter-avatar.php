@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
  * Contributors: DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name.
- * Version: 1.2.4
+ * Version: 1.2.5
  * Author: Daniel Wroblewski
  * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
@@ -49,17 +49,13 @@ class WP_First_Letter_Avatar {
 		// add stylesheets/scripts:
 		add_action('wp_enqueue_scripts', array($this, 'wpfla_add_scripts'));
 
-		// add filter to get_avatar but only when not in admin panel:
-		if (!is_admin()){
-			add_filter('get_avatar', array($this, 'set_comment_avatar'), 10, 5);
+		// add filter to get_avatar:
+		add_filter('get_avatar', array($this, 'set_comment_avatar'), 10, 5);
+
+		// add additional filter for userbar avatar, but only when not in admin:
+		if (!is_admin()) {
+			add_action('admin_bar_menu', array($this, 'add_set_userbar_avatar_filter'), 0);
 		}
-		// use different function for top user/admin bar and remove it after it's been rendered:
-		add_action('admin_bar_menu', function(){
-			add_filter('get_avatar', array($this, 'set_userbar_avatar'), 10, 5);
-		},0);
-		add_action('wp_after_admin_bar_render', function(){
-			remove_filter('get_avatar', array($this, 'set_userbar_avatar'), 10);
-		});
 
 
 		// get plugin configuration from database:
@@ -196,6 +192,14 @@ class WP_First_Letter_Avatar {
 		$avatar_output = $this->set_avatar($name, $email, $size, $alt = '');
 
 		return $avatar_output;
+
+	}
+
+
+
+	public function add_set_userbar_avatar_filter(){
+
+		add_filter('get_avatar', array($this, 'set_userbar_avatar'), 10, 5);
 
 	}
 

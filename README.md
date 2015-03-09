@@ -6,7 +6,7 @@ the users's name.
 
 ![WP First Letter Avatar banner](/assets/banner.png?raw=true)
 
-## Purpose
+## Description
 
 This plugin was inspired by avatars used on some [Discourse forums](http://www.discourse.org/). What it does is, by 
 default, check if commenter has a Gravatar assigned to his email address; if he has, Gravatar is displayed, if not - custom
