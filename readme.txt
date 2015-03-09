@@ -101,7 +101,7 @@ Yes - just go to plugin settings and click Round avatars.
 
 == Upgrade Notice ==
 
-= 1.2.4 =
+= 1.2.5 =
 This version fixes annoying PHP warning. Update recommended.
 
 = 1.2.4 =
