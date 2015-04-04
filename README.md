@@ -34,6 +34,9 @@ You can download a
 [zip from GitHub](https://github.com/DanielAGW/wp-first-letter-avatar/archive/master.zip) and upload it using the WordPress
 plugin uploader or manually unzip it and place in ```wp-content/plugins/```. You can also download it from [WordPress.org Plugin Directory](https://wordpress.org/plugins/wp-first-letter-avatar/).
 
+## Requirements
+
+WP First Letter Avatar requires at least PHP 5.4.0. It **does not work properly** on PHP 5.3.x and earlier.
 
 ## Configuration
 

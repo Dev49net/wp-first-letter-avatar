@@ -1,6 +1,6 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
-Version: 1.2.5
+Version: 1.2.6
 Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
 Contributors: DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar 
@@ -31,7 +31,10 @@ All images were compressed using the fantastic [TinyPNG](https://tinypng.com/), 
 You can [fork the plugin on GitHub](https://github.com/DanielAGW/wp-first-letter-avatar).
 
 = Compatibility with other plugins =
-WP First Letter Avatar is fully compatible with [bbPress](https://bbpress.org/). For [BuddyPress](https://buddypress.org/) compatibility please use my other plugin - [BuddyPress First Letter Avatar](https://wordpress.org/plugins/buddypress-first-letter-avatar/).
+WP First Letter Avatar is fully compatible with [bbPress](https://bbpress.org/) and [wpDiscuz](http://www.gvectors.com/wpdiscuz/). For [BuddyPress](https://buddypress.org/) compatibility please use my other plugin - [BuddyPress First Letter Avatar](https://wordpress.org/plugins/buddypress-first-letter-avatar/).
+
+= Requirements =
+WP First Letter Avatar requires at least PHP 5.4.0. It **does not work properly** on PHP 5.3.x and earlier.
 
 == Installation ==
 
@@ -54,11 +57,13 @@ Absolutely! Just create new directory in 'images' directory, call it, for exampl
 NOTE: Your custom avatars WILL BE DELETED after updating the plugin! Make backup! 
 
 = Can I set custom avatars based on last (or any other) character in user's name? =
-
 Of course! This can be done in plugin settings.
 
 = I don't want to use Gravatar at all. Can I disable it? =
 Yes! By default, WP First Letter Avatar sets custom avatar only to users without Gravatar, but in plugin settings you can disable it and use custom avatar for everybody.
+
+= Is WP First Letter Avatar compatible with other plugins? =
+WP First Letter Avatar has fully tested compatibilty with bbPress and wpDiscuz. For BuddyPress compatibility, please use my other plugin - [BuddyPress First Letter Avatar](https://wordpress.org/plugins/buddypress-first-letter-avatar/).
 
 = Can avatars be round, like in Google+? =
 Yes - just go to plugin settings and click Round avatars.
@@ -71,6 +76,13 @@ Yes - just go to plugin settings and click Round avatars.
 4. Very simple settings page for WP First Letter Avatar. You can decide which character should be used to specify avatar, turn off Gravatar, use custom avatar sets, use rounded avatars etc.
 
 == Changelog ==
+
+= 1.2.6 =
+* PHP 5.4.x or later REQUIRED: PHP 5.3.x is no longer supported by PHP team, if you are still using it - update immediately
+* Added asynchronous Gravatar loading for faster page rendering (needs to be activated in plugin Settings)
+* Added auto-check to see if one or more options in plugin Settings are not empty
+* Fixed standard avatars replacement on Discussion page in Settings
+* Couple of minor fixes
 
 = 1.2.5 =
 * Fixed common PHP warning

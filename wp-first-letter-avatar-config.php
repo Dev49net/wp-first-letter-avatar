@@ -14,8 +14,8 @@ class WP_First_Letter_Avatar_Config {
 
 	public function __construct(){
 
-		add_action( 'admin_menu', array($this, 'wpfla_add_admin_menu' ));
-		add_action( 'admin_init', array($this, 'wpfla_settings_init' ));
+		add_action('admin_menu', array($this, 'wpfla_add_admin_menu'));
+		add_action('admin_init', array($this, 'wpfla_settings_init'));
 
 	}
 
@@ -81,6 +81,14 @@ class WP_First_Letter_Avatar_Config {
 		);
 
 		add_settings_field(
+			'wpfla_use_js',
+			'Use JavaScript for Gravatars<br/>Default: uncheck',
+			array($this, 'wpfla_use_js_render'),
+			'wpfla_pluginPage',
+			'wpfla_pluginPage_section'
+		);
+
+		add_settings_field(
 			'wpfla_round_avatars',
 			'Round avatars<br/>Default: uncheck',
 			array($this, 'wpfla_round_avatars_render'),
@@ -135,7 +143,17 @@ class WP_First_Letter_Avatar_Config {
 	public function wpfla_use_gravatar_render(){
 
 		?>
-		<input type='checkbox' name='wpfla_settings[wpfla_use_gravatar]' <?php checked( $this->wpfla_options['wpfla_use_gravatar'], 1 ); ?> value='1' />
+		<input type='checkbox' name='wpfla_settings[wpfla_use_gravatar]' <?php checked($this->wpfla_options['wpfla_use_gravatar'], 1); ?> value='1' />
+	<?php
+
+	}
+
+
+
+	public function wpfla_use_js_render(){
+
+		?>
+		<input type='checkbox' name='wpfla_settings[wpfla_use_js]' <?php checked($this->wpfla_options['wpfla_use_js'], 1); ?> value='1' />
 	<?php
 
 	}
@@ -145,7 +163,7 @@ class WP_First_Letter_Avatar_Config {
 	public function wpfla_round_avatars_render(){
 
 		?>
-		<input type='checkbox' name='wpfla_settings[wpfla_round_avatars]' <?php checked( $this->wpfla_options['wpfla_round_avatars'], 1 ); ?> value='1' />
+		<input type='checkbox' name='wpfla_settings[wpfla_round_avatars]' <?php checked($this->wpfla_options['wpfla_round_avatars'], 1); ?> value='1' />
 	<?php
 
 	}
@@ -197,10 +215,15 @@ class WP_First_Letter_Avatar_Config {
 				<span style="text-decoration: underline">Check</span>: use Gravatar when available; <span style="text-decoration: underline">Uncheck</span>: always use custom avatars.
 			</p>
 			<p>
+				<strong>Use JavaScript for Gravatars</strong><br />
+				<span>Works only when option Use Gravatar is active</span><br />
+				<span style="text-decoration: underline">Check</span>: use JavaScript to check for Gravatars (faster); <span style="text-decoration: underline">Uncheck</span>: use PHP to check for Gravatars (slower).
+			</p>
+			<p>
 				<strong>Round avatars</strong><br />
 				<span style="text-decoration: underline">Check</span>: use rounded avatars; <span style="text-decoration: underline">Uncheck</span>: use standard avatars.
 			</p>
-			<p>In case of any problems, use the default values.</p>
+			<p>In case of any problems, use default values.</p>
 
 			<hr />
 
