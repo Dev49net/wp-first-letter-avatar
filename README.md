@@ -62,6 +62,10 @@ Directory where avatars are stored.
 
 Check: use Gravatar when available; Uncheck: always use custom avatars.
 
+**Use JavaScript for Gravatars:**
+
+Check: use JavaScript to check for Gravatars (faster); Uncheck: use PHP to check for Gravatars (slower).
+
 **Round avatars:**
 
 Check: use rounded avatars; Uncheck: use standard avatars.
