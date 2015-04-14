@@ -51,6 +51,10 @@ Extract the zip file and drop the contents in *'wp-content/plugins/'* directory 
 
 == Frequently Asked Questions ==
 
+= Why custom avatars are not displayed? =
+
+Make sure you have selected *'WP First Letter Avatar'* as a *Default avatar* in *Settings > Discussion* page.
+
 = Can I change custom avatars? =
 
 Absolutely! Just create new directory in 'images' directory, call it, for example 'my_avatar_set' and change the avatar set in settings. Make sure to follow the directory and filename convention. 
