@@ -1,15 +1,16 @@
 <?php
+
 /**
  * Plugin Name: WP First Letter Avatar
  * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
  * Contributors: DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name.
- * Version: 1.2.6
+ * Version: 1.2.7
  * Author: Daniel Wroblewski
  * Author URI: https://github.com/DanielAGW
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
- * Requires at least: 3.0.1
- * Tested up to: 4.1.1
+ * Requires at least: 4.0
+ * Tested up to: 4.2
  * Stable tag: trunk
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -20,8 +21,11 @@
 class WP_First_Letter_Avatar {
 
 	// Setup (these values always stay the same):
+	const MINIMUM_PHP = '5.4';
+	const MINIMUM_WP = '4.0';
 	const WPFLA_IMAGES_PATH = 'images'; // avatars root directory
 	const WPFLA_GRAVATAR_URL = 'https://secure.gravatar.com/avatar/';    // default url for gravatar - we're using HTTPS to avoid annoying warnings
+	const PLUGIN_NAME = 'WP First Letter Avatar';
 
 	// Default configuration (this is the default configuration only for the first plugin usage):
 	const WPFLA_USE_GRAVATAR = TRUE;  // TRUE: if user has Gravatar, use it; FALSE: use custom avatars even when gravatar is set
@@ -44,6 +48,22 @@ class WP_First_Letter_Avatar {
 
 
 	public function __construct(){
+
+		// add plugin activation hook:
+		register_activation_hook(__FILE__, array($this, 'plugin_activate'));
+
+		// add plugin deactivation hook:
+		register_deactivation_hook(__FILE__, array($this, 'plugin_deactivate'));
+
+		// add new avatar to Settings > Discussion page:
+		add_filter('avatar_defaults', array($this, 'add_discussion_page_avatar'));
+
+		// check for currently set default avatar:
+		$avatar_default = get_option('avatar_default');
+		$plugin_avatar = plugins_url(self::WPFLA_IMAGES_PATH . '/wp-first-letter-avatar.png', __FILE__);
+		if ($avatar_default != $plugin_avatar){ // if first letter avatar is not activated in settings > discussion page...
+			return; // cancel plugin execution
+		}
 
 		// add Settings link to plugins page:
 		add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'wpfla_add_settings_link'));
@@ -104,6 +124,18 @@ class WP_First_Letter_Avatar {
 				$options['wpfla_unknown_image'] = self::WPFLA_IMAGE_UNKNOWN;
 				$change_values = TRUE;
 			}
+			if (empty($options['wpfla_use_gravatar'])){
+				$options['wpfla_use_gravatar'] = FALSE;
+				$change_values = TRUE;
+			}
+			if (empty($options['wpfla_use_js'])){
+				$options['wpfla_use_js'] = FALSE;
+				$change_values = TRUE;
+			}
+			if (empty($options['wpfla_round_avatars'])){
+				$options['wpfla_round_avatars'] = FALSE;
+				$change_values = TRUE;
+			}
 			if ($change_values === TRUE){
 				$settings['wpfla_use_gravatar'] = $options['wpfla_use_gravatar'];
 				$settings['wpfla_use_js'] = $options['wpfla_use_js'];
@@ -123,6 +155,61 @@ class WP_First_Letter_Avatar {
 			$this->round_avatars = $options['wpfla_round_avatars'];
 			$this->image_unknown = $options['wpfla_unknown_image'];
 		}
+
+	}
+
+
+
+	public function plugin_activate(){ // plugin activation event
+
+		$php = self::MINIMUM_PHP;
+		$wp = self::MINIMUM_WP;
+
+		// check PHP and WP compatibility:
+		global $wp_version;
+		if (version_compare(PHP_VERSION, $php, '<'))
+			$flag = 'PHP';
+		else if	(version_compare($wp_version, $wp, '<'))
+			$flag = 'WordPress';
+
+		if (!empty($flag)){
+			$version = 'PHP' == $flag ? $php : $wp;
+			deactivate_plugins(plugin_basename(__FILE__));
+			wp_die('<p><strong>' . self::PLUGIN_NAME . '</strong> plugin requires ' . $flag . ' version ' . $version . ' or greater.</p>', 'Plugin Activation Error',  array('response' => 200, 'back_link' => TRUE));
+		}
+
+		// backup current active default avatar:
+		$current_avatar = get_option('avatar_default');
+		update_option('avatar_default_wpfla_backup', $current_avatar);
+
+		// set first letter avatar as main avatar when activating the plugin:
+		$avatar_file = plugins_url(self::WPFLA_IMAGES_PATH . '/wp-first-letter-avatar.png', __FILE__);
+		update_option('avatar_default' , $avatar_file); // set the new avatar to be the default
+
+	}
+
+
+
+	public function plugin_deactivate(){ // plugin deactivation event
+
+		// restore previous default avatar:
+		$plugin_option_value = plugins_url(self::WPFLA_IMAGES_PATH . '/wp-first-letter-avatar.png', __FILE__);
+		$option_name = 'avatar_default_wpfla_backup';
+		$option_value = get_option($option_name);
+		if (!empty($option_value) && $option_value != $plugin_option_value){
+			update_option('avatar_default' , $option_value);
+		}
+
+	}
+
+
+
+	public function add_discussion_page_avatar($avatar_defaults){
+
+		// add new avatar to Settings > Discussion page
+		$avatar_file = plugins_url(self::WPFLA_IMAGES_PATH . '/wp-first-letter-avatar.png', __FILE__);
+		$avatar_defaults[$avatar_file] = self::PLUGIN_NAME;
+		return $avatar_defaults;
 
 	}
 
@@ -214,7 +301,12 @@ class WP_First_Letter_Avatar {
 		$email = '';
 
 		// check if it's a comment:
-		$comment_id = get_comment_ID();
+		global $comment;
+		if (empty($comment)){
+			$comment_id = NULL;
+		} else {
+			$comment_id = get_comment_ID();
+		}
 
 		if ($comment_id === NULL){ // if it's not a regular comment, use $id_or_email to get more data
 

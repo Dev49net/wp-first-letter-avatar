@@ -26,7 +26,7 @@ jQuery(document).ready(function($){
 		};
 
 		$.post(ajaxurl, data, function(response){
-			if (response == '1'){
+			if (response.indexOf('1') >= 0){ // if the response contains '1'...
 				$(current_object).attr('src', gravatar_uri); // replace image src with gravatar uri
 			}
 		});
