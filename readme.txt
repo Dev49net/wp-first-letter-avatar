@@ -1,22 +1,22 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
-Version: 1.2.7
-Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
-Contributors: DanielAGW
-Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar 
+Version: 1.2.8
+Plugin URI: https://github.com/Dev49net/wp-first-letter-avatar
+Contributors: Dev49.net, DanielAGW
+Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
 Requires at least: 4.0
-Tested up to: 4.2
+Tested up to: 4.2.2
 Stable tag: trunk
-Author: Daniel Wroblewski
-Author URI: https://github.com/DanielAGW
+Author: Dev49.net
+Author URI: http://dev49.net
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name.
+Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the users's name on a colorful background.
 
 == Description ==
 
-WP First Letter Avatar **sets custom avatars for users without Gravatar**. The avatar will be a first letter of the users's name, just like in [Discourse](http://www.discourse.org/). You can also configure plugin to use any other letter to set custom avatar.
+WP First Letter Avatar **sets custom avatars for users without Gravatar**. The avatar will be a first letter of the users's name. You can also configure plugin to use any other letter to set custom avatar.
 
 WP First Letter Avatar includes a set of **beautiful, colorful letter avatars** in many sizes. Optimal size will be chosen by the plugin in order to display high quality avatar and not download, for example, big 512px avatars when only 48px is needed... **PSD template** for avatar is also included.
 
@@ -28,7 +28,7 @@ WP First Letter Avatar helps you **bring more colors** into your blog. Plus, you
 
 All images were compressed using the fantastic [TinyPNG](https://tinypng.com/), so avatars are **incredibly light and ultra-high quality**.
 
-You can [fork the plugin on GitHub](https://github.com/DanielAGW/wp-first-letter-avatar).
+You can [fork the plugin on GitHub](https://github.com/Dev49net/wp-first-letter-avatar).
 
 = Compatibility with other plugins =
 WP First Letter Avatar is fully compatible with [bbPress](https://bbpress.org/) and [wpDiscuz](http://www.gvectors.com/wpdiscuz/). For [BuddyPress](https://buddypress.org/) compatibility please use my other plugin - [BuddyPress First Letter Avatar](https://wordpress.org/plugins/buddypress-first-letter-avatar/).
@@ -50,10 +50,6 @@ WP First Letter Avatar requires at least PHP 5.4.0. It **does not work properly*
 Extract the zip file and drop the contents in *'wp-content/plugins/'* directory of your WordPress installation, then activate the Plugin from *'Plugins'* page.
 
 == Frequently Asked Questions ==
-
-= Why custom avatars are not displayed? =
-
-Make sure you have selected *'WP First Letter Avatar'* as a *Default avatar* in *Settings > Discussion* page.
 
 = Can I change custom avatars? =
 
@@ -80,6 +76,15 @@ Yes - just go to plugin settings and click Round avatars.
 4. Very simple settings page for WP First Letter Avatar. You can decide which character should be used to specify avatar, turn off Gravatar, use custom avatar sets, use rounded avatars etc.
 
 == Changelog ==
+
+= 1.2.8 =
+* Greatly improved security of AJAX requests
+* Added new feature - filter priority (only for advanced users)
+* Fixed possible compatibilty issues with other plugins by adding prefix to couple of global JS variables
+* Fixed weird error some users experienced (avatars displaying as letter A for every user)
+* Asynchronous JavaScript Gravatar verification now as default option for new plugin users
+* No longer need to activate plugin on Settings > Discussion page (it was causing problems)
+* Changed plugin author from myself to my brand - Dev49.net :-)
 
 = 1.2.7 =
 * Fixed couple of minor issues
@@ -123,6 +128,9 @@ Yes - just go to plugin settings and click Round avatars.
 * First WP First Letter Avatar release
 
 == Upgrade Notice ==
+
+= 1.2.8 =
+Fixed couple of issues, added new features. Update recommended.
 
 = 1.2.7 =
 Fixed couple of issues, added new features. Update recommended.

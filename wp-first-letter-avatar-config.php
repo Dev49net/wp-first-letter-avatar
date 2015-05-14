@@ -82,7 +82,7 @@ class WP_First_Letter_Avatar_Config {
 
 		add_settings_field(
 			'wpfla_use_js',
-			'Use JavaScript for Gravatars<br/>Default: uncheck',
+			'Use JavaScript for Gravatars<br/>Default: check',
 			array($this, 'wpfla_use_js_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
@@ -92,6 +92,14 @@ class WP_First_Letter_Avatar_Config {
 			'wpfla_round_avatars',
 			'Round avatars<br/>Default: uncheck',
 			array($this, 'wpfla_round_avatars_render'),
+			'wpfla_pluginPage',
+			'wpfla_pluginPage_section'
+		);
+
+		add_settings_field(
+			'wpfla_filter_priority',
+			'Plugin filter priority<br/>Default: 10',
+			array($this, 'wpfla_filter_priority_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
@@ -170,6 +178,16 @@ class WP_First_Letter_Avatar_Config {
 
 
 
+	public function wpfla_filter_priority_render(){
+
+		?>
+		<input type='text' name='wpfla_settings[wpfla_filter_priority]' value='<?php echo $this->wpfla_options['wpfla_filter_priority']; ?>' />
+	<?php
+
+	}
+
+
+
 	public function wpfla_settings_section_callback(){
 
 		$this->wpfla_options = get_option('wpfla_settings');
@@ -223,12 +241,16 @@ class WP_First_Letter_Avatar_Config {
 				<strong>Round avatars</strong><br />
 				<span style="text-decoration: underline">Check</span>: use rounded avatars; <span style="text-decoration: underline">Uncheck</span>: use standard avatars.
 			</p>
+			<p>
+				<strong>Filter priority</strong><br />
+				Advanced users only. If you are using various avatar plugins, you can increase or decrease execution priority of this plugin.
+			</p>
 			<p>In case of any problems, use default values.</p>
 
 			<hr />
 
 			<p style="text-align: right; margin-right:30px">If you like the plugin, please <a href="https://wordpress.org/support/view/plugin-reviews/wp-first-letter-avatar#postform">leave a review in WordPress Plugin Directory</a>!<br />
-				WP First Letter Avatar was created by <a href="https://github.com/DanielAGW/">Daniel Wroblewski</a></p>
+				WP First Letter Avatar was created by <a href="http://dev49.net/">Daniel Wroblewski</a></p>
 
 		</form>
 	<?php

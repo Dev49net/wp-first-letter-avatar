@@ -2,15 +2,15 @@
 
 /**
  * Plugin Name: WP First Letter Avatar
- * Plugin URI: https://github.com/DanielAGW/wp-first-letter-avatar
- * Contributors: DanielAGW
- * Description: Set custom avatars for users with no Gravatar. The avatar will be a first (or any other) letter of the users's name.
- * Version: 1.2.7
- * Author: Daniel Wroblewski
- * Author URI: https://github.com/DanielAGW
- * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar
+ * Plugin URI: https://github.com/Dev49net/wp-first-letter-avatar
+ * Contributors: Dev49.net, DanielAGW
+ * Description: Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the users's name on a colorful background.
+ * Version: 1.2.8
+ * Author: Dev49.net
+ * Author URI: http://dev49.net
+ * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
  * Requires at least: 4.0
- * Tested up to: 4.2
+ * Tested up to: 4.2.2
  * Stable tag: trunk
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -29,13 +29,14 @@ class WP_First_Letter_Avatar {
 
 	// Default configuration (this is the default configuration only for the first plugin usage):
 	const WPFLA_USE_GRAVATAR = TRUE;  // TRUE: if user has Gravatar, use it; FALSE: use custom avatars even when gravatar is set
-	const WPFLA_USE_JS = FALSE;  // TRUE: use JS to replace avatars to Gravatar; FALSE: generate avatars and gravatars here in PHP
+	const WPFLA_USE_JS = TRUE;  // TRUE: use JS to replace avatars to Gravatar; FALSE: generate avatars and gravatars here in PHP
 	const WPFLA_AVATAR_SET = 'default'; // directory where avatars are stored
 	const WPFLA_LETTER_INDEX = 0;  // 0: first letter; 1: second letter; -1: last letter, etc.
 	const WPFLA_IMAGES_FORMAT = 'png';   // file format of the avatars
 	const WPFLA_ROUND_AVATARS = FALSE;     // TRUE: use rounded avatars; FALSE: dont use round avatars
 	const WPFLA_IMAGE_UNKNOWN = 'mystery';    // file name (without extension) of the avatar used for users with usernames beginning
 										// with symbol other than one from a-z range
+	const WPFLA_FILTER_PRIORITY = 10;  // plugin filter priority
 	// variables duplicating const values (will be changed in constructor after reading config from DB):
 	private $use_gravatar = self::WPFLA_USE_GRAVATAR;
 	private $use_js = self::WPFLA_USE_JS;
@@ -44,52 +45,17 @@ class WP_First_Letter_Avatar {
 	private $images_format = self::WPFLA_IMAGES_FORMAT;
 	private $round_avatars = self::WPFLA_ROUND_AVATARS;
 	private $image_unknown = self::WPFLA_IMAGE_UNKNOWN;
+	private $filter_priority = self::WPFLA_FILTER_PRIORITY;
 
 
 
 	public function __construct(){
 
-		// add plugin activation hook:
-		register_activation_hook(__FILE__, array($this, 'plugin_activate'));
-
-		// add plugin deactivation hook:
-		register_deactivation_hook(__FILE__, array($this, 'plugin_deactivate'));
-
-		// add new avatar to Settings > Discussion page:
-		add_filter('avatar_defaults', array($this, 'add_discussion_page_avatar'));
-
-		// check for currently set default avatar:
-		$avatar_default = get_option('avatar_default');
-		$plugin_avatar = plugins_url(self::WPFLA_IMAGES_PATH . '/wp-first-letter-avatar.png', __FILE__);
-		if ($avatar_default != $plugin_avatar){ // if first letter avatar is not activated in settings > discussion page...
-			return; // cancel plugin execution
-		}
-
 		// add Settings link to plugins page:
 		add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'wpfla_add_settings_link'));
 
-		// add stylesheets/scripts for front-end and admin:
-		add_action('wp_enqueue_scripts', array($this, 'wpfla_add_scripts'));
-		add_action('admin_enqueue_scripts', array($this, 'wpfla_add_scripts'));
-
-		// add Ajax action for asynchronous Gravatar verification:
-		add_action('wp_ajax_gravatar_verify', array($this, 'ajax_gravatar_exists'));
-		add_action('wp_ajax_nopriv_gravatar_verify', array($this, 'ajax_gravatar_exists'));
-
-		// add filter to get_avatar:
-		add_filter('get_avatar', array($this, 'set_comment_avatar'), 10, 5);
-
-		// add additional filter for userbar avatar, but only when not in admin:
-		if (!is_admin()){
-			add_action('admin_bar_menu', function(){
-				add_filter('get_avatar', array($this, 'set_userbar_avatar'), 10, 5);
-			}, 0);
-		} else { // when in admin, make sure first letter avatars are not displayed on discussion settings page
-			global $pagenow;
-			if ($pagenow == 'options-discussion.php'){
-				remove_filter('get_avatar', array($this, 'set_comment_avatar'));
-			}
-		}
+		// add plugin activation hook:
+		register_activation_hook(__FILE__, array($this, 'plugin_activate'));
 
 		// get plugin configuration from database:
 		$options = get_option('wpfla_settings');
@@ -102,7 +68,8 @@ class WP_First_Letter_Avatar {
 				'wpfla_letter_index' => self::WPFLA_LETTER_INDEX,
 				'wpfla_file_format' => self::WPFLA_IMAGES_FORMAT,
 				'wpfla_round_avatars' => self::WPFLA_ROUND_AVATARS,
-				'wpfla_unknown_image' => self::WPFLA_IMAGE_UNKNOWN
+				'wpfla_unknown_image' => self::WPFLA_IMAGE_UNKNOWN,
+				'wpfla_filter_priority' => self::WPFLA_FILTER_PRIORITY
 			);
 			add_option('wpfla_settings', $settings);
 		} else {
@@ -136,6 +103,10 @@ class WP_First_Letter_Avatar {
 				$options['wpfla_round_avatars'] = FALSE;
 				$change_values = TRUE;
 			}
+			if (empty($options['wpfla_filter_priority'])){
+				$options['wpfla_filter_priority'] = self::WPFLA_FILTER_PRIORITY;
+				$change_values = TRUE;
+			}
 			if ($change_values === TRUE){
 				$settings['wpfla_use_gravatar'] = $options['wpfla_use_gravatar'];
 				$settings['wpfla_use_js'] = $options['wpfla_use_js'];
@@ -144,16 +115,43 @@ class WP_First_Letter_Avatar {
 				$settings['wpfla_file_format'] = $options['wpfla_file_format'];
 				$settings['wpfla_round_avatars'] = $options['wpfla_round_avatars'];
 				$settings['wpfla_unknown_image'] = $options['wpfla_unknown_image'];
+				$settings['wpfla_filter_priority'] = $options['wpfla_filter_priority'];
 				update_option('wpfla_settings', $settings);
 			}
 			// and then assign them to our class properties
 			$this->use_gravatar = $options['wpfla_use_gravatar'];
 			$this->use_js = $options['wpfla_use_js'];
 			$this->avatar_set = $options['wpfla_avatar_set'];
-			$this->letter_index = $options['wpfla_letter_index'];
+			$this->letter_index = intval($options['wpfla_letter_index']);
 			$this->images_format = $options['wpfla_file_format'];
 			$this->round_avatars = $options['wpfla_round_avatars'];
 			$this->image_unknown = $options['wpfla_unknown_image'];
+			$this->filter_priority = intval($options['wpfla_filter_priority']);
+		}
+
+		// add stylesheets/scripts for front-end and admin:
+		add_action('wp_enqueue_scripts', array($this, 'wpfla_add_scripts'));
+		add_action('admin_enqueue_scripts', array($this, 'wpfla_add_scripts'));
+
+		// add Ajax action for asynchronous Gravatar verification:
+		if (is_admin()){
+			add_action('wp_ajax_wpfla_gravatar_verify', array($this, 'ajax_gravatar_exists'));
+			add_action('wp_ajax_nopriv_wpfla_gravatar_verify', array($this, 'ajax_gravatar_exists'));
+		}
+
+		// add filter to get_avatar:
+		add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 5);
+
+		// add additional filter for userbar avatar, but only when not in admin:
+		if (!is_admin()){
+			add_action('admin_bar_menu', function(){
+				add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 5);
+			}, 0);
+		} else { // when in admin, make sure first letter avatars are not displayed on discussion settings page
+			global $pagenow;
+			if ($pagenow == 'options-discussion.php'){
+				remove_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority);
+			}
 		}
 
 	}
@@ -178,38 +176,13 @@ class WP_First_Letter_Avatar {
 			wp_die('<p><strong>' . self::PLUGIN_NAME . '</strong> plugin requires ' . $flag . ' version ' . $version . ' or greater.</p>', 'Plugin Activation Error',  array('response' => 200, 'back_link' => TRUE));
 		}
 
-		// backup current active default avatar:
-		$current_avatar = get_option('avatar_default');
-		update_option('avatar_default_wpfla_backup', $current_avatar);
-
-		// set first letter avatar as main avatar when activating the plugin:
-		$avatar_file = plugins_url(self::WPFLA_IMAGES_PATH . '/wp-first-letter-avatar.png', __FILE__);
-		update_option('avatar_default' , $avatar_file); // set the new avatar to be the default
-
 	}
 
 
 
 	public function plugin_deactivate(){ // plugin deactivation event
 
-		// restore previous default avatar:
-		$plugin_option_value = plugins_url(self::WPFLA_IMAGES_PATH . '/wp-first-letter-avatar.png', __FILE__);
-		$option_name = 'avatar_default_wpfla_backup';
-		$option_value = get_option($option_name);
-		if (!empty($option_value) && $option_value != $plugin_option_value){
-			update_option('avatar_default' , $option_value);
-		}
-
-	}
-
-
-
-	public function add_discussion_page_avatar($avatar_defaults){
-
-		// add new avatar to Settings > Discussion page
-		$avatar_file = plugins_url(self::WPFLA_IMAGES_PATH . '/wp-first-letter-avatar.png', __FILE__);
-		$avatar_defaults[$avatar_file] = self::PLUGIN_NAME;
-		return $avatar_defaults;
+		// nothing to do here
 
 	}
 
@@ -229,13 +202,14 @@ class WP_First_Letter_Avatar {
 	public function wpfla_add_scripts(){
 
 		// add main CSS file:
-		wp_enqueue_style('prefix-style', plugins_url('css/style.css', __FILE__));
+		wp_enqueue_style('wpfla-style-handle', plugins_url('css/style.css', __FILE__));
 
 		// add main JS file, only when JS is used:
 		if ($this->use_js == TRUE){
 			$js_variables = array(
 				'img_data_attribute' => 'data-wpfla-gravatar',
-				'ajaxurl' => admin_url('admin-ajax.php')
+				'ajaxurl' => admin_url('admin-ajax.php'),
+				'wp_nonce' => wp_create_nonce('wp-first-letter-avatar-nonce') // create nonce to verify ajax request
 			);
 			wp_enqueue_script('wpfla-script-handle', plugins_url('js/script.js', __FILE__), array('jquery'));
 			wp_localize_script('wpfla-script-handle', 'wpfla_vars_data', $js_variables);
@@ -246,6 +220,8 @@ class WP_First_Letter_Avatar {
 
 
 	public function ajax_gravatar_exists(){
+
+		check_ajax_referer('wp-first-letter-avatar-nonce', 'verification', true); // die if nonce incorrect
 
 		$gravatar_uri = $_POST['gravatar_uri'];
 		$gravatar_exists = $this->gravatar_exists_uri($gravatar_uri);
