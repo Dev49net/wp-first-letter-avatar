@@ -3,8 +3,6 @@ WP First Letter Avatar
 
 A WordPress plugin to set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the user's name.
 
-![WP First Letter Avatar banner](/assets/banner-772x250.png?raw=true)
-
 ## Description
 
 The plugin checks if commenter has a Gravatar assigned to his email address; if he has, Gravatar is displayed, if not - custom avatar is used. Custom avatar consists of commenter's name first letter and colorful background. 
