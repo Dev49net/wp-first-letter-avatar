@@ -2,15 +2,15 @@
 
 /**
  * Plugin Name: WP First Letter Avatar
- * Plugin URI: https://github.com/Dev49net/wp-first-letter-avatar
+ * Plugin URI: http://dev49.net
  * Contributors: Dev49.net, DanielAGW
- * Description: Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the users's name on a colorful background.
- * Version: 1.2.8
+ * Description: Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the user's name on a colorful background.
+ * Version: 2.0
  * Author: Dev49.net
  * Author URI: http://dev49.net
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
  * Requires at least: 4.0
- * Tested up to: 4.2.2
+ * Tested up to: 4.3
  * Stable tag: trunk
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -20,11 +20,11 @@
 
 class WP_First_Letter_Avatar {
 
-	// Setup (these values always stay the same):
+	// Setup:
 	const MINIMUM_PHP = '5.4';
 	const MINIMUM_WP = '4.0';
 	const WPFLA_IMAGES_PATH = 'images'; // avatars root directory
-	const WPFLA_GRAVATAR_URL = 'https://secure.gravatar.com/avatar/';    // default url for gravatar - we're using HTTPS to avoid annoying warnings
+	const WPFLA_GRAVATAR_URL = 'https://secure.gravatar.com/avatar/';    // default url for gravatar
 	const PLUGIN_NAME = 'WP First Letter Avatar';
 
 	// Default configuration (this is the default configuration only for the first plugin usage):
@@ -144,9 +144,7 @@ class WP_First_Letter_Avatar {
 
 		// add additional filter for userbar avatar, but only when not in admin:
 		if (!is_admin()){
-			add_action('admin_bar_menu', function(){
-				add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 5);
-			}, 0);
+			add_action('admin_bar_menu', array($this, 'admin_bar_menu_action'), 0);
 		} else { // when in admin, make sure first letter avatars are not displayed on discussion settings page
 			global $pagenow;
 			if ($pagenow == 'options-discussion.php'){
@@ -154,6 +152,14 @@ class WP_First_Letter_Avatar {
 			}
 		}
 
+	}
+	
+	
+	
+	public function admin_bar_menu_action(){ // change avatar in the userbar at the top
+		
+		add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 5);
+		
 	}
 
 

@@ -1,6 +1,6 @@
 /*
- Plugin: WP First Letter Avatar
- Plugin website: https://github.com/DanielAGW/wp-first-letter-avatar
+	Plugin: WP First Letter Avatar
+	Plugin website: http://dev49.net
  */
 
 
