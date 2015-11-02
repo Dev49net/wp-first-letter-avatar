@@ -136,6 +136,9 @@ Yes - just go to plugin settings and click Round avatars.
 
 == Upgrade Notice ==
 
+= 2.0.1 =
+Fixed possible Gravatar incompatibility. Update recommended.
+
 = 1.2.8 =
 Fixed couple of issues, added new features. Update recommended.
 
