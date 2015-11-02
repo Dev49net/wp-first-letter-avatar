@@ -22,8 +22,7 @@ WP First Letter Avatar is fully compatible with [bbPress](https://bbpress.org/).
 ## Installation
 
 You can download a
-[zip from GitHub](https://github.com/Dev49net/wp-first-letter-avatar/archive/master.zip) and upload it using the WordPress
-plugin uploader or manually unzip it and place in ```wp-content/plugins/```. You can also download it from [WordPress.org Plugin Directory](https://wordpress.org/plugins/wp-first-letter-avatar/).
+[zip from GitHub](https://github.com/Dev49net/wp-first-letter-avatar/archive/master.zip) and upload it using the WordPress plugin uploader or manually unzip it and place in ```wp-content/plugins/```. You can also download it from [WordPress.org Plugin Directory](https://wordpress.org/plugins/wp-first-letter-avatar/).
 
 ## Requirements
 
