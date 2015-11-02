@@ -5,7 +5,7 @@ Plugin URI: http://dev49.net
 Contributors: Dev49.net, DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
 Requires at least: 4.0
-Tested up to: 4.3
+Tested up to: 4.3.1
 Stable tag: trunk
 Author: Dev49.net
 Author URI: http://dev49.net
