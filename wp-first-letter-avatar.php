@@ -5,7 +5,7 @@
  * Plugin URI: http://dev49.net
  * Contributors: Dev49.net, DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the user's name on a colorful background.
- * Version: 2.0
+ * Version: 2.0.1
  * Author: Dev49.net
  * Author URI: http://dev49.net
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
@@ -451,24 +451,14 @@ class WP_First_Letter_Avatar {
 	private function gravatar_exists($email){
 
 		/*  Check if there is gravatar assigned to this email
-		    returns bool: true if gravatar is assigned, false if it is not
-		    function partially borrowed from http://codex.wordpress.org/Using_Gravatars - thanks! */
+		    returns bool: true if gravatar is assigned, false if it is not */
 
 		$hash = md5(strtolower(trim($email))); // email md5 hash used by gravatar system
-		$uri = 'http://www.gravatar.com/avatar/' . $hash . '?d=404';
-		$response = wp_remote_head($uri); // response from gravatar server
+		$uri = self::WPFLA_GRAVATAR_URL . $hash;
 
-		if (is_wp_error($response)){ // caused error?
-			$data = 'error';
-		} else {
-			$data = $response['response']['code']; // no error, assign response code to data
-		}
+		$result = $this->gravatar_exists_uri($uri);
 
-		if ($data == '200'){ // response code is 200, gravatar exists, return true
-			return TRUE;
-		} else { // response code is not 200, gravatar doesn't exist, return false
-			return FALSE;
-		}
+		return $result;
 
 	}
 
@@ -485,6 +475,11 @@ class WP_First_Letter_Avatar {
 		if (stripos($uri, 'gravatar.com/avatar') === FALSE){
 			return FALSE;
 		}
+		
+		// make sure we are using correct gravatar URL:
+		$uri = str_replace('https://www.gravatar.com/avatar/', self::WPFLA_GRAVATAR_URL, $uri);
+		$uri = str_replace('http://www.gravatar.com/avatar/', self::WPFLA_GRAVATAR_URL, $uri);
+		$uri = str_replace('//www.gravatar.com/avatar/', self::WPFLA_GRAVATAR_URL, $uri);
 
 		// strip all GET parameters:
 		$uri = strtok($uri, '?');
