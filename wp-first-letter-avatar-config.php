@@ -81,14 +81,6 @@ class WP_First_Letter_Avatar_Config {
 		);
 
 		add_settings_field(
-			'wpfla_use_js',
-			'Use JavaScript for Gravatars<br/>Default: check',
-			array($this, 'wpfla_use_js_render'),
-			'wpfla_pluginPage',
-			'wpfla_pluginPage_section'
-		);
-
-		add_settings_field(
 			'wpfla_round_avatars',
 			'Round avatars<br/>Default: uncheck',
 			array($this, 'wpfla_round_avatars_render'),
@@ -111,7 +103,7 @@ class WP_First_Letter_Avatar_Config {
 	public function wpfla_letter_index_render(){
 
 		?>
-		<input style="width:40px;" type='text' name='wpfla_settings[wpfla_letter_index]' value='<?php echo $this->wpfla_options['wpfla_letter_index']; ?>' />
+		<input style="width:40px;" type='text' name='wpfla_settings[wpfla_letter_index]' value='<?php if (array_key_exists('wpfla_letter_index', $this->wpfla_options)) echo $this->wpfla_options['wpfla_letter_index']; ?>' />
 	<?php
 
 	}
@@ -121,7 +113,7 @@ class WP_First_Letter_Avatar_Config {
 	public function wpfla_file_format_render(){
 
 		?>
-		<input style="width: 100px;" type='text' name='wpfla_settings[wpfla_file_format]' value='<?php echo $this->wpfla_options['wpfla_file_format']; ?>' />
+		<input style="width: 100px;" type='text' name='wpfla_settings[wpfla_file_format]' value='<?php if (array_key_exists('wpfla_file_format', $this->wpfla_options)) echo $this->wpfla_options['wpfla_file_format']; ?>' />
 	<?php
 
 	}
@@ -131,7 +123,7 @@ class WP_First_Letter_Avatar_Config {
 	public function wpfla_unknown_image_render(){
 
 		?>
-		<input type='text' name='wpfla_settings[wpfla_unknown_image]' value='<?php echo $this->wpfla_options['wpfla_unknown_image']; ?>' />
+		<input type='text' name='wpfla_settings[wpfla_unknown_image]' value='<?php if (array_key_exists('wpfla_unknown_image', $this->wpfla_options)) echo $this->wpfla_options['wpfla_unknown_image']; ?>' />
 	<?php
 
 	}
@@ -141,7 +133,7 @@ class WP_First_Letter_Avatar_Config {
 	public function wpfla_avatar_set_render(){
 
 		?>
-		<input type='text' name='wpfla_settings[wpfla_avatar_set]' value='<?php echo $this->wpfla_options['wpfla_avatar_set']; ?>' />
+		<input type='text' name='wpfla_settings[wpfla_avatar_set]' value='<?php if (array_key_exists('wpfla_avatar_set', $this->wpfla_options)) echo $this->wpfla_options['wpfla_avatar_set']; ?>' />
 	<?php
 
 	}
@@ -151,17 +143,7 @@ class WP_First_Letter_Avatar_Config {
 	public function wpfla_use_gravatar_render(){
 
 		?>
-		<input type='checkbox' name='wpfla_settings[wpfla_use_gravatar]' <?php checked($this->wpfla_options['wpfla_use_gravatar'], 1); ?> value='1' />
-	<?php
-
-	}
-
-
-
-	public function wpfla_use_js_render(){
-
-		?>
-		<input type='checkbox' name='wpfla_settings[wpfla_use_js]' <?php checked($this->wpfla_options['wpfla_use_js'], 1); ?> value='1' />
+		<input type='checkbox' name='wpfla_settings[wpfla_use_gravatar]' <?php if (array_key_exists('wpfla_use_gravatar', $this->wpfla_options)) checked($this->wpfla_options['wpfla_use_gravatar'], 1); ?> value='1' />
 	<?php
 
 	}
@@ -171,7 +153,7 @@ class WP_First_Letter_Avatar_Config {
 	public function wpfla_round_avatars_render(){
 
 		?>
-		<input type='checkbox' name='wpfla_settings[wpfla_round_avatars]' <?php checked($this->wpfla_options['wpfla_round_avatars'], 1); ?> value='1' />
+		<input type='checkbox' name='wpfla_settings[wpfla_round_avatars]' <?php if (array_key_exists('wpfla_round_avatars', $this->wpfla_options)) checked($this->wpfla_options['wpfla_round_avatars'], 1); ?> value='1' />
 	<?php
 
 	}
@@ -181,7 +163,7 @@ class WP_First_Letter_Avatar_Config {
 	public function wpfla_filter_priority_render(){
 
 		?>
-		<input type='text' name='wpfla_settings[wpfla_filter_priority]' value='<?php echo $this->wpfla_options['wpfla_filter_priority']; ?>' />
+		<input type='text' name='wpfla_settings[wpfla_filter_priority]' value='<?php if (array_key_exists('wpfla_filter_priority', $this->wpfla_options)) echo $this->wpfla_options['wpfla_filter_priority']; ?>' />
 	<?php
 
 	}
@@ -231,11 +213,6 @@ class WP_First_Letter_Avatar_Config {
 			<p>
 				<strong>Use Gravatar</strong><br />
 				<span style="text-decoration: underline">Check</span>: use Gravatar when available; <span style="text-decoration: underline">Uncheck</span>: always use custom avatars.
-			</p>
-			<p>
-				<strong>Use JavaScript for Gravatars</strong><br />
-				<span>Works only when option Use Gravatar is active</span><br />
-				<span style="text-decoration: underline">Check</span>: use JavaScript to check for Gravatars (faster); <span style="text-decoration: underline">Uncheck</span>: use PHP to check for Gravatars (slower).
 			</p>
 			<p>
 				<strong>Round avatars</strong><br />
