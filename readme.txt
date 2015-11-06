@@ -1,6 +1,6 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
-Version: 2.1
+Version: 2.1.1
 Plugin URI: http://dev49.net
 Contributors: Dev49.net, DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
@@ -77,6 +77,9 @@ Yes - just go to plugin settings and click Round avatars.
 
 == Changelog ==
 
+= 2.1.1 =
+* Improved coding style (resulting in possibly slightly better performance)
+
 = 2.1 =
 * Redesigned Gravatar/first letter avatar choice mechanism (faster and more reliable performance)
 
@@ -138,6 +141,9 @@ Yes - just go to plugin settings and click Round avatars.
 * First WP First Letter Avatar release
 
 == Upgrade Notice ==
+
+= 2.1.1 =
+Slightly improved performance. Update not necessary.
 
 = 2.1 =
 Improved performance and reliability. Update recommended.
