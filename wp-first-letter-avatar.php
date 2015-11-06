@@ -5,7 +5,7 @@
  * Plugin URI: http://dev49.net
  * Contributors: Dev49.net, DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the user's name on a colorful background.
- * Version: 2.1
+ * Version: 2.1.1
  * Author: Dev49.net
  * Author URI: http://dev49.net
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
@@ -28,15 +28,15 @@ class WP_First_Letter_Avatar {
 	const PLUGIN_NAME = 'WP First Letter Avatar';
 
 	// Default configuration (this is the default configuration only for the first plugin use):
-	const USE_GRAVATAR = TRUE;  // TRUE: if user has Gravatar, use it; FALSE: use custom avatars even when gravatar is set
+	const USE_GRAVATAR = true;  // TRUE: if user has Gravatar, use it; FALSE: use custom avatars even when gravatar is set
 	const AVATAR_SET = 'default'; // directory where avatars are stored
 	const LETTER_INDEX = 0;  // 0: first letter; 1: second letter; -1: last letter, etc.
 	const IMAGES_FORMAT = 'png';   // file format of the avatars
-	const ROUND_AVATARS = FALSE;     // TRUE: use rounded avatars; FALSE: dont use round avatars
+	const ROUND_AVATARS = false;     // TRUE: use rounded avatars; FALSE: dont use round avatars
 	const IMAGE_UNKNOWN = 'mystery';    // file name (without extension) of the avatar used for users with usernames beginning with symbol other than one from a-z range
 	const FILTER_PRIORITY = 10;  // plugin filter priority
 	
-	// variables duplicating const values (will be changed in constructor after reading config from DB):
+	// properties duplicating const values (will be changed in constructor after reading config from DB):
 	private $use_gravatar = self::USE_GRAVATAR;
 	private $avatar_set = self::AVATAR_SET;
 	private $letter_index = self::LETTER_INDEX;
@@ -71,11 +71,11 @@ class WP_First_Letter_Avatar {
 			add_option('wpfla_settings', $initial_settings);
 		} else { // there are records in DB for our plugin
 			// assign them to our class properties:
-			$this->use_gravatar = (array_key_exists('wpfla_use_gravatar', $options) ? (bool)$options['wpfla_use_gravatar'] : FALSE);
+			$this->use_gravatar = (array_key_exists('wpfla_use_gravatar', $options) ? (bool)$options['wpfla_use_gravatar'] : false);
 			$this->avatar_set = (array_key_exists('wpfla_avatar_set', $options) ? (string)$options['wpfla_avatar_set'] : self::AVATAR_SET);
 			$this->letter_index = (array_key_exists('wpfla_letter_index', $options) ? (int)$options['wpfla_letter_index'] : self::LETTER_INDEX);
 			$this->images_format = (array_key_exists('wpfla_file_format', $options) ? (string)$options['wpfla_file_format'] : self::IMAGES_FORMAT);
-			$this->round_avatars = (array_key_exists('wpfla_round_avatars', $options) ? (bool)$options['wpfla_round_avatars'] : FALSE);
+			$this->round_avatars = (array_key_exists('wpfla_round_avatars', $options) ? (bool)$options['wpfla_round_avatars'] : false);
 			$this->image_unknown = (array_key_exists('wpfla_unknown_image', $options) ? (string)$options['wpfla_unknown_image'] : self::IMAGE_UNKNOWN);
 			$this->filter_priority = (array_key_exists('wpfla_filter_priority', $options) ? (int)$options['wpfla_filter_priority'] : self::FILTER_PRIORITY);		
 		}
@@ -125,7 +125,7 @@ class WP_First_Letter_Avatar {
 		if (!empty($flag)){
 			$version = 'PHP' == $flag ? $php : $wp;
 			deactivate_plugins(plugin_basename(__FILE__));
-			wp_die('<p><strong>' . self::PLUGIN_NAME . '</strong> plugin requires ' . $flag . ' version ' . $version . ' or greater.</p>', 'Plugin Activation Error',  array('response' => 200, 'back_link' => TRUE));
+			wp_die('<p><strong>' . self::PLUGIN_NAME . '</strong> plugin requires ' . $flag . ' version ' . $version . ' or greater.</p>', 'Plugin Activation Error',  array('response' => 200, 'back_link' => true));
 		}
 
 	}
@@ -152,7 +152,7 @@ class WP_First_Letter_Avatar {
 		}
 
 		// first check whether Gravatar should be used at all:
-		if ($this->use_gravatar == TRUE){
+		if ($this->use_gravatar == true){
 			$gravatar_uri = $this->generate_gravatar_uri($email, $size);
 			$first_letter_uri = $this->generate_first_letter_uri($name, $size);
 			$avatar_uri = $gravatar_uri . '&default=' . urlencode($first_letter_uri);
@@ -181,13 +181,13 @@ class WP_First_Letter_Avatar {
 			if (!empty($id_or_email->comment_ID)){
 				$comment_id = $id_or_email->comment_ID; // it is a comment object and we can take the ID
 			} else {
-				$comment_id = NULL;
+				$comment_id = null;
 			}
 		} else {
-			$comment_id = NULL;
+			$comment_id = null;
 		}
 
-		if ($comment_id === NULL){ // if it's not a regular comment, use $id_or_email to get more data
+		if ($comment_id === null){ // if it's not a regular comment, use $id_or_email to get more data
 
 			if (is_numeric($id_or_email)){ // if id_or_email represents user id, get user by id
 				$id = (int) $id_or_email;
@@ -211,11 +211,11 @@ class WP_First_Letter_Avatar {
 				}	
 			} else { // if commenter is not a registered user, we have to try various fallbacks
 				$post_id = get_the_ID();
-				if ($post_id !== NULL){ // if this actually is a post...
+				if ($post_id !== null){ // if this actually is a post...
 					$post_data = array('name' => '', 'email' => '');
 					// first we try for bbPress:
-					$post_data['name'] = get_post_meta($post_id, '_bbp_anonymous_name', TRUE);
-					$post_data['email'] = get_post_meta($post_id, '_bbp_anonymous_email', TRUE);
+					$post_data['name'] = get_post_meta($post_id, '_bbp_anonymous_name', true);
+					$post_data['email'] = get_post_meta($post_id, '_bbp_anonymous_email', true);
 					if (!empty($post_data)){ // we have some post data...
 						$name = $post_data['name'];
 						$email = $post_data['email'];
@@ -262,7 +262,7 @@ class WP_First_Letter_Avatar {
 
 		// prepare extra classes for <img> tag depending on plugin settings:
 		$extra_img_class = '';
-		if ($this->round_avatars == TRUE){
+		if ($this->round_avatars == true){
 			$extra_img_class .= 'round-avatars';
 		}
 
