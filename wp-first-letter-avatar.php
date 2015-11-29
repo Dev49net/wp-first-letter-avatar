@@ -329,7 +329,7 @@ class WP_First_Letter_Avatar {
 
 
 
-	private function generate_gravatar_uri($email, $size){
+	private function generate_gravatar_uri($email, $size = '96'){
 
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)){ // if email not correct
 			$email = ''; // set it to empty string
