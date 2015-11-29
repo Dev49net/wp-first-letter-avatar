@@ -16,41 +16,47 @@ if (!defined('ABSPATH')){
 class WP_First_Letter_Avatar_Config {
 	
 	
-	private $wpfla_options;
+	private $options;
 
 
 	public function __construct(){
 
-		add_action('admin_menu', array($this, 'wpfla_add_admin_menu'));
-		add_action('admin_init', array($this, 'wpfla_settings_init'));
+		add_action('admin_menu', array($this, 'add_admin_menu')); // add plugin settings page
+		add_action('admin_init', array($this, 'settings_init')); // create plugin settings page content
 
 	}
 
 
 
-	public function wpfla_add_admin_menu(){
+	/* 
+	 * Add plugin settings page
+	 */
+	public function add_admin_menu(){
 
-		add_options_page('WP First Letter Avatar', 'WP First Letter Avatar', 'manage_options', 'wp_first_letter_avatar', array($this, 'wpfla_options_page'));
+		add_options_page('WP First Letter Avatar', 'WP First Letter Avatar', 'manage_options', 'wp_first_letter_avatar', array($this, 'options_page'));
 
 	}
 
 
 
-	public function wpfla_settings_init(){
+	/* 
+	 * Create plugin settings page content
+	 */
+	public function settings_init(){
 
 		register_setting('wpfla_pluginPage', 'wpfla_settings');
 
 		 add_settings_section(
 			'wpfla_pluginPage_section',
 			'Plugin configuration',
-			array($this, 'wpfla_settings_section_callback'),
+			array($this, 'settings_section_callback'),
 			'wpfla_pluginPage'
 		);
 
 		add_settings_field(
 			'wpfla_letter_index',
 			'Letter index<br/>Default: 0',
-			array($this, 'wpfla_letter_index_render'),
+			array($this, 'letter_index_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
@@ -58,7 +64,7 @@ class WP_First_Letter_Avatar_Config {
 		add_settings_field(
 			'wpfla_file_format',
 			'File format<br/>Default: png',
-			array($this, 'wpfla_file_format_render'),
+			array($this, 'file_format_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
@@ -66,7 +72,7 @@ class WP_First_Letter_Avatar_Config {
 		add_settings_field(
 			'wpfla_unknown_image',
 			'Unknown image name<br/>Default: mystery',
-			array($this, 'wpfla_unknown_image_render'),
+			array($this, 'unknown_image_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
@@ -74,7 +80,7 @@ class WP_First_Letter_Avatar_Config {
 		add_settings_field(
 			'wpfla_avatar_set',
 			'Avatar set<br/>Default: default',
-			array($this, 'wpfla_avatar_set_render'),
+			array($this, 'avatar_set_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
@@ -82,7 +88,7 @@ class WP_First_Letter_Avatar_Config {
 		add_settings_field(
 			'wpfla_use_gravatar',
 			'Use Gravatar<br/>Default: check',
-			array($this, 'wpfla_use_gravatar_render'),
+			array($this, 'use_gravatar_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
@@ -90,7 +96,7 @@ class WP_First_Letter_Avatar_Config {
 		add_settings_field(
 			'wpfla_round_avatars',
 			'Round avatars<br/>Default: uncheck',
-			array($this, 'wpfla_round_avatars_render'),
+			array($this, 'round_avatars_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
@@ -98,7 +104,7 @@ class WP_First_Letter_Avatar_Config {
 		add_settings_field(
 			'wpfla_filter_priority',
 			'Plugin filter priority<br/>Default: 10',
-			array($this, 'wpfla_filter_priority_render'),
+			array($this, 'filter_priority_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
 		);
@@ -107,85 +113,76 @@ class WP_First_Letter_Avatar_Config {
 
 
 
-	public function wpfla_letter_index_render(){
+	/* 
+	 * Below methods are responsible for rendering each settings field
+	 */
+	public function letter_index_render(){
 
 		?>
-		<input style="width:40px;" type='text' name='wpfla_settings[wpfla_letter_index]' value='<?php if (array_key_exists('wpfla_letter_index', $this->wpfla_options)) echo $this->wpfla_options['wpfla_letter_index']; ?>' />
+		<input style="width:40px;" type='text' name='wpfla_settings[wpfla_letter_index]' value='<?php if (array_key_exists('wpfla_letter_index', $this->options)) echo $this->options['wpfla_letter_index']; ?>' />
+	<?php
+
+	}
+	public function file_format_render(){
+
+		?>
+		<input style="width: 100px;" type='text' name='wpfla_settings[wpfla_file_format]' value='<?php if (array_key_exists('wpfla_file_format', $this->options)) echo $this->options['wpfla_file_format']; ?>' />
+	<?php
+
+	}
+	public function unknown_image_render(){
+
+		?>
+		<input type='text' name='wpfla_settings[wpfla_unknown_image]' value='<?php if (array_key_exists('wpfla_unknown_image', $this->options)) echo $this->options['wpfla_unknown_image']; ?>' />
+	<?php
+
+	}
+	public function avatar_set_render(){
+
+		?>
+		<input type='text' name='wpfla_settings[wpfla_avatar_set]' value='<?php if (array_key_exists('wpfla_avatar_set', $this->options)) echo $this->options['wpfla_avatar_set']; ?>' />
+	<?php
+
+	}
+	public function use_gravatar_render(){
+
+		?>
+		<input type='checkbox' name='wpfla_settings[wpfla_use_gravatar]' <?php if (array_key_exists('wpfla_use_gravatar', $this->options)) checked($this->options['wpfla_use_gravatar'], 1); ?> value='1' />
+	<?php
+
+	}
+	public function round_avatars_render(){
+
+		?>
+		<input type='checkbox' name='wpfla_settings[wpfla_round_avatars]' <?php if (array_key_exists('wpfla_round_avatars', $this->options)) checked($this->options['wpfla_round_avatars'], 1); ?> value='1' />
+	<?php
+
+	}
+	public function filter_priority_render(){
+
+		?>
+		<input type='text' name='wpfla_settings[wpfla_filter_priority]' value='<?php if (array_key_exists('wpfla_filter_priority', $this->options)) echo $this->options['wpfla_filter_priority']; ?>' />
 	<?php
 
 	}
 
 
 
-	public function wpfla_file_format_render(){
+	/* 
+	 * Get plugin options from database
+	 */
+	public function settings_section_callback(){
 
-		?>
-		<input style="width: 100px;" type='text' name='wpfla_settings[wpfla_file_format]' value='<?php if (array_key_exists('wpfla_file_format', $this->wpfla_options)) echo $this->wpfla_options['wpfla_file_format']; ?>' />
-	<?php
-
-	}
-
-
-
-	public function wpfla_unknown_image_render(){
-
-		?>
-		<input type='text' name='wpfla_settings[wpfla_unknown_image]' value='<?php if (array_key_exists('wpfla_unknown_image', $this->wpfla_options)) echo $this->wpfla_options['wpfla_unknown_image']; ?>' />
-	<?php
+		$this->options = get_option('wpfla_settings');
 
 	}
 
 
 
-	public function wpfla_avatar_set_render(){
-
-		?>
-		<input type='text' name='wpfla_settings[wpfla_avatar_set]' value='<?php if (array_key_exists('wpfla_avatar_set', $this->wpfla_options)) echo $this->wpfla_options['wpfla_avatar_set']; ?>' />
-	<?php
-
-	}
-
-
-
-	public function wpfla_use_gravatar_render(){
-
-		?>
-		<input type='checkbox' name='wpfla_settings[wpfla_use_gravatar]' <?php if (array_key_exists('wpfla_use_gravatar', $this->wpfla_options)) checked($this->wpfla_options['wpfla_use_gravatar'], 1); ?> value='1' />
-	<?php
-
-	}
-
-
-
-	public function wpfla_round_avatars_render(){
-
-		?>
-		<input type='checkbox' name='wpfla_settings[wpfla_round_avatars]' <?php if (array_key_exists('wpfla_round_avatars', $this->wpfla_options)) checked($this->wpfla_options['wpfla_round_avatars'], 1); ?> value='1' />
-	<?php
-
-	}
-
-
-
-	public function wpfla_filter_priority_render(){
-
-		?>
-		<input type='text' name='wpfla_settings[wpfla_filter_priority]' value='<?php if (array_key_exists('wpfla_filter_priority', $this->wpfla_options)) echo $this->wpfla_options['wpfla_filter_priority']; ?>' />
-	<?php
-
-	}
-
-
-
-	public function wpfla_settings_section_callback(){
-
-		$this->wpfla_options = get_option('wpfla_settings');
-
-	}
-
-
-
-	public function wpfla_options_page(){
+	/* 
+	 * Create a settings form
+	 */
+	public function options_page(){
 
 		?>
 		<form action='options.php' method='post'>
