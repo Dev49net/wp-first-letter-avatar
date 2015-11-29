@@ -5,7 +5,7 @@
  * Plugin URI: http://dev49.net
  * Contributors: Dev49.net, DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the user's name on a colorful background.
- * Version: 2.1.1
+ * Version: 2.2
  * Author: Dev49.net
  * Author URI: http://dev49.net
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
@@ -15,6 +15,13 @@
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
+
+
+
+// Exit if accessed directly:
+if (!defined('ABSPATH')){ 
+    exit; 
+}
 
 
 
@@ -170,7 +177,7 @@ class WP_First_Letter_Avatar {
 
 
 
-	public function set_comment_avatar($avatar, $id_or_email, $size = '96', $default, $alt = ''){
+	public function set_comment_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = ''){
 
 		// create two main variables:
 		$name = '';
@@ -242,7 +249,7 @@ class WP_First_Letter_Avatar {
 
 
 
-	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default, $alt = ''){ // only size and alt arguments are used
+	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = ''){ // only size and alt arguments are used
 
 		// get user information:
 		global $current_user;
@@ -286,9 +293,14 @@ class WP_First_Letter_Avatar {
 		}
 
 		// create array with allowed character range (in this case it is a-z range):
-		$allowed_chars = range('a', 'z');
+		$allowed_letters = range('a', 'z');
+		$allowed_numbers = range(0, 9);
+		foreach ($allowed_numbers as $number){ // cast each item to string (strict param of in_array requires same type)
+			$allowed_numbers[$number] = (string)$number; 
+		}
+		$allowed_chars = array_merge($allowed_letters, $allowed_numbers);
 		// check if the file name meets the requirement; if it doesn't - set it to unknown
-		if (!in_array($file_name, $allowed_chars)){
+		if (!in_array($file_name, $allowed_chars, true)){
 			$file_name = $this->image_unknown;
 		}
 
@@ -344,4 +356,6 @@ $wp_first_letter_avatar = new WP_First_Letter_Avatar();
 // require back-end of the plugin
 if (is_admin() && !defined('DOING_AJAX')){
 	require_once 'wp-first-letter-avatar-config.php';
+	// create WP_First_Letter_Avatar_Config object:
+	$wp_first_letter_avatar_config = new WP_First_Letter_Avatar_Config();
 }

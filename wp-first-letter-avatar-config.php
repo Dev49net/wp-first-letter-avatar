@@ -3,7 +3,14 @@
 /*
 	PHP file containing whole back-end of the WP First Letter Avatar plugin.
 	WP First Letter Avatar prefix - 'wpfla'
-*/
+ */
+
+
+
+// Exit if accessed directly:
+if (!defined('ABSPATH')){ 
+    exit; 
+}
 
 
 class WP_First_Letter_Avatar_Config {
@@ -235,8 +242,3 @@ class WP_First_Letter_Avatar_Config {
 	}
 
 }
-
-
-
-// create WP_First_Letter_Avatar_Config object:
-$wp_first_letter_avatar_config = new WP_First_Letter_Avatar_Config();
