@@ -56,12 +56,35 @@ class WP_First_Letter_Avatar {
 
 	public function __construct(){
 
+		/* --------------- WP HOOKS --------------- */
+		
 		// add Settings link to plugins page:
 		add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_settings_link'));
 
 		// add plugin activation hook:
 		register_activation_hook(__FILE__, array($this, 'plugin_activate'));
 
+		// add stylesheets/scripts:
+		add_action('wp_enqueue_scripts', function(){
+			wp_enqueue_style('wpfla-style-handle', plugins_url('css/style.css', __FILE__));
+		});		
+
+		// add filter to get_avatar:
+		add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 5);
+
+		// add additional filter for userbar avatar, but only when not in admin:
+		if (!is_admin()){
+			add_action('admin_bar_menu', array($this, 'admin_bar_menu_action'), 0);
+		} else { // when in admin, make sure first letter avatars are not displayed on discussion settings page
+			global $pagenow;
+			if ($pagenow == 'options-discussion.php'){
+				remove_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority);
+			}
+		}
+		
+
+		/* --------------- CONFIGURATION --------------- */
+		
 		// get plugin configuration from database:
 		$options = get_option('wpfla_settings');
 		if (empty($options)){
@@ -87,36 +110,25 @@ class WP_First_Letter_Avatar {
 			$this->filter_priority = (array_key_exists('wpfla_filter_priority', $options) ? (int)$options['wpfla_filter_priority'] : self::FILTER_PRIORITY);		
 		}
 
-		// add stylesheets/scripts:
-		add_action('wp_enqueue_scripts', function(){
-			wp_enqueue_style('wpfla-style-handle', plugins_url('css/style.css', __FILE__));
-		});		
-
-		// add filter to get_avatar:
-		add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 5);
-
-		// add additional filter for userbar avatar, but only when not in admin:
-		if (!is_admin()){
-			add_action('admin_bar_menu', array($this, 'admin_bar_menu_action'), 0);
-		} else { // when in admin, make sure first letter avatars are not displayed on discussion settings page
-			global $pagenow;
-			if ($pagenow == 'options-discussion.php'){
-				remove_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority);
-			}
-		}
-
 	}
 	
-	
-	
+
+
+	/*
+	 * This method is called when 'admin_bar_menu' action is called - it is needed to apply another filter just to
+	 * filter the avatar in top bar (for logged in users)
+	 */
 	public function admin_bar_menu_action(){ // change avatar in the userbar at the top
 		
 		add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 5);
 		
 	}
+	
 
 
-
+	/*
+	 * On plugin activation check WP and PHP version and if requirements are not met, disable the plugin and display error
+	 */
 	public function plugin_activate(){ // plugin activation event
 
 		$php = self::MINIMUM_PHP;
@@ -136,20 +148,27 @@ class WP_First_Letter_Avatar {
 		}
 
 	}
+	
 
 
-
+	/*
+	 * Add Settings link to Plugins section
+	 */
 	public function add_settings_link($links){
 
 		// add localised Settings link do plugin settings on plugins page:
 		$settings_link = '<a href="options-general.php?page=wp_first_letter_avatar">'.__('Settings', 'default').'</a>';
 		array_unshift($links, $settings_link);
+		
 		return $links;
 
 	}
+	
 
 
-
+	/*
+	 * This is the main method used for generating avatars. It returns full HTML <img /> tag.
+	 */
 	private function set_avatar($name, $email, $size, $alt = ''){
 
 		if (empty($name)){ // if, for some reason, there is no name, use email instead
@@ -174,9 +193,12 @@ class WP_First_Letter_Avatar {
 		return $avatar_img_output;
 
 	}
+	
 
 
-
+	/*
+	 * This filters every WordPress avatar call and return full HTML <img /> tag
+	 */
 	public function set_comment_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = ''){
 
 		// create two main variables:
@@ -246,9 +268,12 @@ class WP_First_Letter_Avatar {
 		return $avatar_output;
 
 	}
+	
 
 
-
+	/*
+	 * This method is used to filter the avatar displayed in upper bar (displayed only for logged in users)
+	 */
 	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = ''){ // only size and alt arguments are used
 
 		// get user information:
@@ -257,14 +282,18 @@ class WP_First_Letter_Avatar {
 		$name = $current_user->display_name;
 		$email = $current_user->user_email;
 
+		// use obtained data to return full HTML <img> tag
 		$avatar_output = $this->set_avatar($name, $email, $size, $alt);
 
 		return $avatar_output;
 
 	}
+	
 
 
-
+	/*
+	 * Generate full HTML <img /> tag with avatar URL, size, CSS classes etc.
+	 */
 	private function generate_avatar_img_tag($avatar_uri, $size, $alt = ''){
 
 		// prepare extra classes for <img> tag depending on plugin settings:
@@ -279,9 +308,13 @@ class WP_First_Letter_Avatar {
 		return $output_data;
 
 	}
+	
 
 
-
+	/*
+	 * This method generates full URL for letter avatar (for example http://yourblog.com/wp-content/plugins/wp-first-letter-avatar/images/default/96/k.png),
+	 * according to the $name and $size provided
+	 */
 	private function generate_first_letter_uri($name, $size){
 		
 		// get picture filename (and lowercase it) from commenter name:
@@ -326,9 +359,12 @@ class WP_First_Letter_Avatar {
 		return $avatar_uri;
 
 	}
+	
 
 
-
+	/*
+	 * This method generates full URL for Gravatar, according to the $email and $size provided
+	 */
 	private function generate_gravatar_uri($email, $size = '96'){
 
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)){ // if email not correct
