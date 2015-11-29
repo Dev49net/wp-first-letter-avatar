@@ -10,7 +10,7 @@
  * Author URI: http://dev49.net
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
  * Requires at least: 4.0
- * Tested up to: 4.3.1
+ * Tested up to: 4.4
  * Stable tag: trunk
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
