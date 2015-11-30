@@ -325,9 +325,10 @@ class WP_First_Letter_Avatar {
 			$file_name = strtolower($file_name); // lowercase it...
 		}
 
-		// create array with allowed character range (in this case it is a-z range):
-		$allowed_letters = range('a', 'z');
+		// create array with allowed character range:
 		$allowed_numbers = range(0, 9);
+		$allowed_letters = range('a', 'z');
+		$allowed_letters_russian = range('?', '?');
 		foreach ($allowed_numbers as $number){ // cast each item to string (strict param of in_array requires same type)
 			$allowed_numbers[$number] = (string)$number; 
 		}
