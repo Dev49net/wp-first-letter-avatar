@@ -325,14 +325,15 @@ class WP_First_Letter_Avatar {
 			$file_name = strtolower($file_name); // lowercase it...
 		}
 
-		// create array with allowed character range:
+		// create arrays with allowed character ranges:
 		$allowed_numbers = range(0, 9);
-		$allowed_letters = range('a', 'z');
-		$allowed_letters_russian = range('?', '?');
 		foreach ($allowed_numbers as $number){ // cast each item to string (strict param of in_array requires same type)
 			$allowed_numbers[$number] = (string)$number; 
 		}
-		$allowed_chars = array_merge($allowed_letters, $allowed_numbers);
+		$allowed_letters_latin = range('a', 'z');
+		$allowed_letters_cyrillic = range('а', 'ё');
+		$allowed_letters = array_merge($allowed_letters_latin, $allowed_letters_cyrillic); // merge two alphabets
+		$allowed_chars = array_merge($allowed_letters, $allowed_numbers); // merge all alphabets and numbers
 		// check if the file name meets the requirement; if it doesn't - set it to unknown
 		if (!in_array($file_name, $allowed_chars, true)){
 			$file_name = $this->image_unknown;
