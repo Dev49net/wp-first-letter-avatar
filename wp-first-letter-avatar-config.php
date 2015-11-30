@@ -224,7 +224,7 @@ class WP_First_Letter_Avatar_Config {
 			</p>
 			<p>
 				<strong>Filter priority</strong><br />
-				Advanced users only. If you are using various avatar plugins, you can increase or decrease execution priority of this plugin.
+				If you are using multiple avatar plugins, you can increase or decrease execution priority of this plugin. If WP First Letter Avatar is overriding your other plugins, try changing this to a lower value (for example 9).
 			</p>
 			<p>In case of any problems, use default values.</p>
 
