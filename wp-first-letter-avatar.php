@@ -316,12 +316,12 @@ class WP_First_Letter_Avatar {
 	 * according to the $name and $size provided
 	 */
 	private function generate_first_letter_uri($name, $size){
-		
+
 		// get picture filename (and lowercase it) from commenter name:
-		if (empty($name)){  // if, for some reason, the result is empty, set file_name to default unknown image
+		if (empty($username)){  // if, for some reason, the result is empty, set file_name to default unknown image
 			$file_name = $this->image_unknown;
 		} else {
-			$file_name = substr($name, $this->letter_index, 1); // get one letter counting from letter_index
+			$file_name = substr($username, $this->letter_index, 1); // get one letter counting from letter_index
 			$file_name = strtolower($file_name); // lowercase it...
 		}
 
@@ -356,8 +356,11 @@ class WP_First_Letter_Avatar {
 				case 'cyrillic':
 					// below line is used to convert cyrillic char to unicode number (because cyrillic letters are stored
 					// as decimal unicode codes for each letter to avoid problems with non-ASCII filenames)					
-					$file_name = unpack('V', iconv('UTF-8', 'UCS-4LE', $file_name))[1]; // beautiful solution by @bobince from SO - http://stackoverflow.com/a/27444149/4848918
-					$file_name = 'cyrillic_' . $file_name;
+					// We're getting back to $username again, since we need to treat it a bit differently (with multibyte 
+					// operations) in order to pass it to iconv() and get proper code point value
+					$file_name_mb = mb_strtolower(mb_substr($username, $this->letter_index, 1));
+					$unicode_code_point = unpack('V', iconv('UTF-8', 'UCS-4LE', $file_name_mb))[1]; // beautiful one-liner by @bobince from SO - http://stackoverflow.com/a/27444149/4848918
+					$file_name = 'cyrillic_' . $unicode_code_point;
 					break;
 				default: // some weird flag has been set for unknown reason :-)
 					$file_name = $this->image_unknown; // set it to uknknown
