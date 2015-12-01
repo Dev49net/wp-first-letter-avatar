@@ -77,6 +77,11 @@ Yes - just go to plugin settings and click Round avatars.
 
 == Changelog ==
 
+= 2.2 =
+* Added support for numbers
+* Added support for Cyrillic script (huge thanks to **@collex**)
+* Small fix: changed description of filter priority value in settings (thanks to **@yolandal**)
+
 = 2.1.1 =
 * Improved coding style (resulting in possibly slightly better performance)
 
@@ -141,6 +146,9 @@ Yes - just go to plugin settings and click Round avatars.
 * First WP First Letter Avatar release
 
 == Upgrade Notice ==
+
+= 2.2 =
+Added support for numbers and Cyrillic script. Update not necessary.
 
 = 2.1.1 =
 Slightly improved performance. Update not necessary.
