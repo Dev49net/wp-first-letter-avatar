@@ -80,6 +80,7 @@ Yes - just go to plugin settings and click Round avatars.
 = 2.2 =
 * Added support for numbers
 * Added support for Cyrillic script (huge thanks to **@collex**)
+* WordPress 4.4 ready
 * Small fix: changed description of filter priority value in settings (thanks to **@yolandal**)
 
 = 2.1.1 =
