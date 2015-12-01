@@ -220,7 +220,7 @@ class WP_First_Letter_Avatar_Config {
 			</p>
 			<p>
 				<strong>Round avatars</strong><br />
-				<span style="text-decoration: underline">Check</span>: use rounded avatars; <span style="text-decoration: underline">Uncheck</span>: use standard avatars.
+				<span style="text-decoration: underline">Check</span>: use rounded avatars; <span style="text-decoration: underline">Uncheck</span>: use standard avatars. This may not always work - your theme may override this setting.
 			</p>
 			<p>
 				<strong>Filter priority</strong><br />
