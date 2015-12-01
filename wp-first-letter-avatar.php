@@ -332,12 +332,38 @@ class WP_First_Letter_Avatar {
 		}
 		$allowed_letters_latin = range('a', 'z');
 		$allowed_letters_cyrillic = range('а', 'ё');
-		$allowed_letters = array_merge($allowed_letters_latin, $allowed_letters_cyrillic); // merge two alphabets
-		$allowed_chars = array_merge($allowed_letters, $allowed_numbers); // merge all alphabets and numbers
 		// check if the file name meets the requirement; if it doesn't - set it to unknown
-		if (!in_array($file_name, $allowed_chars, true)){
-			$file_name = $this->image_unknown;
+		$charset_flag = ''; // this will be used to determine whether we are using latin chars, cyrillic chars or numbers
+		// check whther we are using latin/cyrillic/numbers and set the flag, so we can later act appropriately:
+		if (in_array($file_name, $allowed_numbers, true)){
+			$charset_flag = 'number'; 
+		} else if (in_array($file_name, $allowed_letters_latin, true)){
+			$charset_flag = 'latin'; 
+		} else if (in_array($file_name, $allowed_letters_cyrillic, true)){
+			$charset_flag = 'cyrillic'; 
+		} else { // for some reason none of the charset is appropriate
+			$file_name = $this->image_unknown; // set it to uknknown
 		}
+		
+		if (!empty($charset_flag)){ // if charset_flag is not empty, i.e. flag has been set to latin, number or cyrillic...
+			switch ($charset_flag){ // run through various options to determine the actual filename for the letter avatar
+				case 'number':
+					$file_name = 'number_' . $file_name;
+					break;
+				case 'latin':
+					$file_name = 'latin_' . $file_name;
+					break;
+				case 'cyrillic':
+					// below line is used to convert cyrillic char to unicode number (because cyrillic letters are stored
+					// as decimal unicode codes for each letter to avoid problems with non-ASCII filenames)					
+					$file_name = unpack('V', iconv('UTF-8', 'UCS-4LE', $file_name))[1]; // beautiful solution by @bobince from SO - http://stackoverflow.com/a/27444149/4848918
+					$file_name = 'cyrillic_' . $file_name;
+					break;
+				default: // some weird flag has been set for unknown reason :-)
+					$file_name = $this->image_unknown; // set it to uknknown
+					break;
+			}
+		}		
 
 		// detect most appropriate size based on WP avatar size:
 		if ($size <= 48) $custom_avatar_size = '48';
