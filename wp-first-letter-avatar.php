@@ -54,34 +54,7 @@ class WP_First_Letter_Avatar {
 
 
 
-	public function __construct(){
-
-		/* --------------- WP HOOKS --------------- */
-		
-		// add Settings link to plugins page:
-		add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_settings_link'));
-
-		// add plugin activation hook:
-		register_activation_hook(__FILE__, array($this, 'plugin_activate'));
-
-		// add stylesheets/scripts:
-		add_action('wp_enqueue_scripts', function(){
-			wp_enqueue_style('wpfla-style-handle', plugins_url('css/style.css', __FILE__));
-		});		
-
-		// add filter to get_avatar:
-		add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 5);
-
-		// add additional filter for userbar avatar, but only when not in admin:
-		if (!is_admin()){
-			add_action('admin_bar_menu', array($this, 'admin_bar_menu_action'), 0);
-		} else { // when in admin, make sure first letter avatars are not displayed on discussion settings page
-			global $pagenow;
-			if ($pagenow == 'options-discussion.php'){
-				remove_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority);
-			}
-		}
-		
+	public function __construct(){		
 
 		/* --------------- CONFIGURATION --------------- */
 		
@@ -108,6 +81,33 @@ class WP_First_Letter_Avatar {
 			$this->round_avatars = (array_key_exists('wpfla_round_avatars', $options) ? (bool)$options['wpfla_round_avatars'] : false);
 			$this->image_unknown = (array_key_exists('wpfla_unknown_image', $options) ? (string)$options['wpfla_unknown_image'] : self::IMAGE_UNKNOWN);
 			$this->filter_priority = (array_key_exists('wpfla_filter_priority', $options) ? (int)$options['wpfla_filter_priority'] : self::FILTER_PRIORITY);		
+		}
+		
+
+		/* --------------- WP HOOKS --------------- */
+		
+		// add Settings link to plugins page:
+		add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_settings_link'));
+
+		// add plugin activation hook:
+		register_activation_hook(__FILE__, array($this, 'plugin_activate'));
+
+		// add stylesheets/scripts:
+		add_action('wp_enqueue_scripts', function(){
+			wp_enqueue_style('wpfla-style-handle', plugins_url('css/style.css', __FILE__));
+		});		
+
+		// add filter to get_avatar:
+		add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 5);
+
+		// add additional filter for userbar avatar, but only when not in admin:
+		if (!is_admin()){
+			add_action('admin_bar_menu', array($this, 'admin_bar_menu_action'), 0);
+		} else { // when in admin, make sure first letter avatars are not displayed on discussion settings page
+			global $pagenow;
+			if ($pagenow == 'options-discussion.php'){
+				remove_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority);
+			}
 		}
 
 	}
