@@ -256,10 +256,21 @@ class WP_First_Letter_Avatar {
 				}
 			}
 
-		} else { // if it's a standard comment, use basic comment functions to retrive info
+		} else { // if it's a standard comment, use basic comment properties and/or functions to retrive info
 
-			$name = get_comment_author();
-			$email = get_comment_author_email();
+			$comment = $id_or_email;
+			
+			if (!empty($comment->comment_author)){
+				$name = $comment->comment_author;
+			} else {
+				$name = get_comment_author();
+			}
+			
+			if (!empty($comment->comment_author_email)){
+				$email = $comment->comment_author_email;
+			} else {
+				$email = get_comment_author_email();
+			}
 
 		}
 
