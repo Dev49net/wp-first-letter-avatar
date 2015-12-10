@@ -53,7 +53,7 @@ Extract the zip file and drop the contents in *'wp-content/plugins/'* directory 
 
 = Plugin does not work, what should I do? =
 
-There may be some conflict with this plugin and some other plugins you are using. If WP First Letter Avatar is overriding your other avatar plugins, please go to plugin settings and change Filter Priority value to a lower value - for example 9, or even -1. If other plugins are overriding WP First Letter Avatar images, try increasing the value - to 11 or 9999. Experimenting with these values should give you some results. Filter priority value basically specifies the order that avatar filters are executed in. Setting it to a high value will cause WP First Letter Avatar to execute after other plugins, whereas setting it to a low value will execute WP First Letter Avatar before other plugins.
+There may be some conflict with this plugin and some other plugins you are using. If WP First Letter Avatar is overriding your other avatar plugins, please go to plugin settings and change Filter Priority value to a lower value - for example 9, or even -1. If other plugins are overriding WP First Letter Avatar images, try increasing the value to 11 or 9999. Experimenting with these values should give you some results. Filter priority value basically specifies the order that avatar filters are executed in. Setting it to a high value will cause WP First Letter Avatar to execute after other plugins, whereas setting it to a low value will execute WP First Letter Avatar before other plugins.
 
 = Can I change custom avatars? =
 
