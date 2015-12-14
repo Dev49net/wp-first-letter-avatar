@@ -387,14 +387,16 @@ class WP_First_Letter_Avatar {
 					$file_name = 'latin_' . $file_name;
 					break;
 				case 'cyrillic':
-					$unicode_code_point = unpack('V', iconv('UTF-8', 'UCS-4LE', $file_name_mb))[1]; // beautiful one-liner by @bobince from SO - http://stackoverflow.com/a/27444149/4848918
+					$temp_array = unpack('V', iconv('UTF-8', 'UCS-4LE', $file_name_mb)); // beautiful one-liner by @bobince from SO - http://stackoverflow.com/a/27444149/4848918
+					$unicode_code_point = $temp_array[1];
 					$file_name = 'cyrillic_' . $unicode_code_point;
 					break;
 				case 'arabic':
-					$unicode_code_point = unpack('V', iconv('UTF-8', 'UCS-4LE', $file_name_mb))[1];
+					$temp_array = unpack('V', iconv('UTF-8', 'UCS-4LE', $file_name_mb));
+					$unicode_code_point = $temp_array[1];
 					$file_name = 'arabic_' . $unicode_code_point;
 					break;
-				default: // some weird flag has been set for unknown reason :-)
+				default:
 					$file_name = $this->image_unknown; // set it to uknknown
 					break;
 			}
