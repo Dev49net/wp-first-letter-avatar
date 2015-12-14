@@ -19,8 +19,8 @@
 
 
 // Exit if accessed directly:
-if (!defined('ABSPATH')){ 
-    exit; 
+if (!defined('ABSPATH')){
+    exit;
 }
 
 
@@ -42,7 +42,7 @@ class WP_First_Letter_Avatar {
 	const ROUND_AVATARS = false;     // TRUE: use rounded avatars; FALSE: dont use round avatars
 	const IMAGE_UNKNOWN = 'mystery';    // file name (without extension) of the avatar used for users with usernames beginning with symbol other than one from a-z range
 	const FILTER_PRIORITY = 10;  // plugin filter priority
-	
+
 	// properties duplicating const values (will be changed in constructor after reading config from DB):
 	private $use_gravatar = self::USE_GRAVATAR;
 	private $avatar_set = self::AVATAR_SET;
@@ -54,10 +54,10 @@ class WP_First_Letter_Avatar {
 
 
 
-	public function __construct(){		
+	public function __construct(){
 
 		/* --------------- CONFIGURATION --------------- */
-		
+
 		// get plugin configuration from database:
 		$options = get_option('wpfla_settings');
 		if (empty($options)){
@@ -80,12 +80,12 @@ class WP_First_Letter_Avatar {
 			$this->images_format = (array_key_exists('wpfla_file_format', $options) ? (string)$options['wpfla_file_format'] : self::IMAGES_FORMAT);
 			$this->round_avatars = (array_key_exists('wpfla_round_avatars', $options) ? (bool)$options['wpfla_round_avatars'] : false);
 			$this->image_unknown = (array_key_exists('wpfla_unknown_image', $options) ? (string)$options['wpfla_unknown_image'] : self::IMAGE_UNKNOWN);
-			$this->filter_priority = (array_key_exists('wpfla_filter_priority', $options) ? (int)$options['wpfla_filter_priority'] : self::FILTER_PRIORITY);		
+			$this->filter_priority = (array_key_exists('wpfla_filter_priority', $options) ? (int)$options['wpfla_filter_priority'] : self::FILTER_PRIORITY);
 		}
-		
+
 
 		/* --------------- WP HOOKS --------------- */
-		
+
 		// add Settings link to plugins page:
 		add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_settings_link'));
 
@@ -95,10 +95,13 @@ class WP_First_Letter_Avatar {
 		// add stylesheets/scripts:
 		add_action('wp_enqueue_scripts', function(){
 			wp_enqueue_style('wpfla-style-handle', plugins_url('css/style.css', __FILE__));
-		});		
+		});
 
 		// add filter to get_avatar:
 		add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 5);
+
+        // add filter for wpDiscuz:
+		add_filter('wpdiscuz_author_avatar_field', array($this, 'set_wpdiscuz_avatar'), $this->filter_priority, 4);
 
 		// add additional filter for userbar avatar, but only when not in admin:
 		if (!is_admin()){
@@ -111,7 +114,7 @@ class WP_First_Letter_Avatar {
 		}
 
 	}
-	
+
 
 
 	/*
@@ -119,11 +122,11 @@ class WP_First_Letter_Avatar {
 	 * filter the avatar in top bar (for logged in users)
 	 */
 	public function admin_bar_menu_action(){ // change avatar in the userbar at the top
-		
+
 		add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 5);
-		
+
 	}
-	
+
 
 
 	/*
@@ -148,7 +151,7 @@ class WP_First_Letter_Avatar {
 		}
 
 	}
-	
+
 
 
 	/*
@@ -159,11 +162,25 @@ class WP_First_Letter_Avatar {
 		// add localised Settings link do plugin settings on plugins page:
 		$settings_link = '<a href="options-general.php?page=wp_first_letter_avatar">'.__('Settings', 'default').'</a>';
 		array_unshift($links, $settings_link);
-		
+
 		return $links;
 
 	}
-	
+
+
+
+	/*
+     * This is method is used to filter wpDiscuz parameter - it feeds $comment object to get_avatar() function
+     * (more on line 102 in wpdiscuz/templates/comment/class.WpdiscuzWalker.php)
+     */
+	public function set_wpdiscuz_avatar($author_avatar_field, $comment, $user, $profile_url){
+
+        // that's all we need - instead of user ID or guest email supplied in
+        // $author_avatar_field, we just need to return the $comment object
+		return $comment;
+
+	}
+
 
 
 	/*
@@ -187,13 +204,13 @@ class WP_First_Letter_Avatar {
 			$first_letter_uri = $this->generate_first_letter_uri($name, $size);
 			$avatar_uri = $first_letter_uri;
 		}
-		
+
 		$avatar_img_output = $this->generate_avatar_img_tag($avatar_uri, $size, $alt); // get final <img /> tag for the avatar/gravatar
 
 		return $avatar_img_output;
 
 	}
-	
+
 
 
 	/*
@@ -205,7 +222,7 @@ class WP_First_Letter_Avatar {
 		$name = '';
 		$email = '';
 
-		
+
 		if (is_object($id_or_email)){ // id_or_email can actually be also a comment object, so let's check it first
 			if (!empty($id_or_email->comment_ID)){
 				$comment_id = $id_or_email->comment_ID; // it is a comment object and we can take the ID
@@ -226,7 +243,7 @@ class WP_First_Letter_Avatar {
 					$id = (int) $id_or_email->user_id;
 					$user = get_user_by('id', $id);
 				}
-			} 
+			}
 
 			if (!empty($user) && is_object($user)){ // if commenter is a registered user...
 				$name = $user->data->display_name;
@@ -237,7 +254,7 @@ class WP_First_Letter_Avatar {
 				} else { // it must be email
 					$email = $id_or_email;
 					$user = get_user_by('email', $email);
-				}	
+				}
 			} else { // if commenter is not a registered user, we have to try various fallbacks
 				$post_id = get_the_ID();
 				if ($post_id !== null){ // if this actually is a post...
@@ -259,13 +276,13 @@ class WP_First_Letter_Avatar {
 		} else { // if it's a standard comment, use basic comment properties and/or functions to retrive info
 
 			$comment = $id_or_email;
-			
+
 			if (!empty($comment->comment_author)){
 				$name = $comment->comment_author;
 			} else {
 				$name = get_comment_author();
 			}
-			
+
 			if (!empty($comment->comment_author_email)){
 				$email = $comment->comment_author_email;
 			} else {
@@ -279,7 +296,7 @@ class WP_First_Letter_Avatar {
 		return $avatar_output;
 
 	}
-	
+
 
 
 	/*
@@ -299,7 +316,7 @@ class WP_First_Letter_Avatar {
 		return $avatar_output;
 
 	}
-	
+
 
 
 	/*
@@ -319,7 +336,7 @@ class WP_First_Letter_Avatar {
 		return $output_data;
 
 	}
-	
+
 
 
 	/*
@@ -341,7 +358,7 @@ class WP_First_Letter_Avatar {
 		// create arrays with allowed character ranges:
 		$allowed_numbers = range(0, 9);
 		foreach ($allowed_numbers as $number){ // cast each item to string (strict param of in_array requires same type)
-			$allowed_numbers[$number] = (string)$number; 
+			$allowed_numbers[$number] = (string)$number;
 		}
 		$allowed_letters_latin = range('a', 'z');
 		$allowed_letters_cyrillic = range('а', 'ё');
@@ -350,17 +367,17 @@ class WP_First_Letter_Avatar {
 		$charset_flag = ''; // this will be used to determine whether we are using latin chars, cyrillic chars, arabic chars or numbers
 		// check whther we are using latin/cyrillic/numbers and set the flag, so we can later act appropriately:
 		if (in_array($file_name, $allowed_numbers, true)){
-			$charset_flag = 'number'; 
+			$charset_flag = 'number';
 		} else if (in_array($file_name, $allowed_letters_latin, true)){
-			$charset_flag = 'latin'; 
+			$charset_flag = 'latin';
 		} else if (in_array($file_name, $allowed_letters_cyrillic, true)){
-			$charset_flag = 'cyrillic'; 
+			$charset_flag = 'cyrillic';
 		} else if (in_array($file_name, $allowed_letters_arabic, true)){
-			$charset_flag = 'arabic'; 
+			$charset_flag = 'arabic';
 		} else { // for some reason none of the charset is appropriate
 			$file_name = $this->image_unknown; // set it to uknknown
 		}
-		
+
 		if (!empty($charset_flag)){ // if charset_flag is not empty, i.e. flag has been set to latin, number or cyrillic...
 			switch ($charset_flag){ // run through various options to determine the actual filename for the letter avatar
 				case 'number':
@@ -374,14 +391,14 @@ class WP_First_Letter_Avatar {
 					$file_name = 'cyrillic_' . $unicode_code_point;
 					break;
 				case 'arabic':
-					$unicode_code_point = unpack('V', iconv('UTF-8', 'UCS-4LE', $file_name_mb))[1]; 
+					$unicode_code_point = unpack('V', iconv('UTF-8', 'UCS-4LE', $file_name_mb))[1];
 					$file_name = 'arabic_' . $unicode_code_point;
 					break;
 				default: // some weird flag has been set for unknown reason :-)
 					$file_name = $this->image_unknown; // set it to uknknown
 					break;
 			}
-		}		
+		}
 
 		// detect most appropriate size based on WP avatar size:
 		if ($size <= 48) $custom_avatar_size = '48';
@@ -405,7 +422,7 @@ class WP_First_Letter_Avatar {
 		return $avatar_uri;
 
 	}
-	
+
 
 
 	/*
@@ -416,18 +433,18 @@ class WP_First_Letter_Avatar {
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)){ // if email not correct
 			$email = ''; // set it to empty string
 		}
-		
+
 		// email to gravatar url:
 		$avatar_uri = self::GRAVATAR_URL;
 		$avatar_uri .= md5(strtolower(trim($email)));
-		$avatar_uri .= "?s={$size}&r=g";	
+		$avatar_uri .= "?s={$size}&r=g";
 
 		return $avatar_uri;
 
 	}
 
-	
-	
+
+
 }
 
 
