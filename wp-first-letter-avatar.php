@@ -5,7 +5,7 @@
  * Plugin URI: http://dev49.net
  * Contributors: Dev49.net, DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the user's name on a colorful background.
- * Version: 2.2.1
+ * Version: 2.2.2
  * Author: Dev49.net
  * Author URI: http://dev49.net
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
@@ -31,7 +31,7 @@ class WP_First_Letter_Avatar {
 	const MINIMUM_PHP = '5.4';
 	const MINIMUM_WP = '4.0';
 	const IMAGES_PATH = 'images'; // avatars root directory
-	const GRAVATAR_URL = 'https://secure.gravatar.com/avatar/';    // default url for gravatar
+	const GRAVATAR_URL = 'https://secure.gravatar.com/avatar/'; // default url for gravatar
 	const PLUGIN_NAME = 'WP First Letter Avatar';
 
 	// Default configuration (this is the default configuration only for the first plugin use):
@@ -374,7 +374,7 @@ class WP_First_Letter_Avatar {
 			$charset_flag = 'cyrillic';
 		} else if (in_array($file_name, $allowed_letters_arabic, true)){
 			$charset_flag = 'arabic';
-		} else { // for some reason none of the charset is appropriate
+		} else { // for some reason none of the charsets is appropriate
 			$file_name = $this->image_unknown; // set it to uknknown
 		}
 
