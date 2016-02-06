@@ -1,11 +1,11 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
-Version: 2.2.3
+Version: 2.2.4
 Plugin URI: http://dev49.net
 Contributors: Dev49.net, DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
 Requires at least: 4.0
-Tested up to: 4.4.1
+Tested up to: 4.4.2
 Stable tag: trunk
 Author: Dev49.net
 Author URI: http://dev49.net
@@ -80,6 +80,10 @@ Yes - just go to plugin settings and click Round avatars.
 4. Very simple settings page for WP First Letter Avatar. You can decide which character should be used to specify avatar, turn off Gravatar, use custom avatar sets, use rounded avatars etc.
 
 == Changelog ==
+
+= 2.2.4 =
+* Added fallback for Polish letters (thanks Micha³!)
+* Plugin prepared for translations (contributors are welcome!)
 
 = 2.2.3 =
 * Fixed possible PHP error on activation due to anonymous function used
@@ -162,6 +166,9 @@ Yes - just go to plugin settings and click Round avatars.
 * First WP First Letter Avatar release
 
 == Upgrade Notice ==
+
+= 2.2.4 =
+Added fallback for Polish letters - update not necessary.
 
 = 2.2.3 =
 Fixed possible PHP error on activation. Update not necessary.
