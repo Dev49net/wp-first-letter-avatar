@@ -48,14 +48,14 @@ class WP_First_Letter_Avatar_Config {
 
 		 add_settings_section(
 			'wpfla_pluginPage_section',
-			'Plugin configuration',
+			__('Plugin configuration', 'wp-first-letter-avatar'),
 			array($this, 'settings_section_callback'),
 			'wpfla_pluginPage'
 		);
 
 		add_settings_field(
 			'wpfla_letter_index',
-			'Letter index<br/>Default: 0',
+			__('Letter index', 'wp-first-letter-avatar') . '<br/>' . __('Default:', 'wp-first-letter-avatar') . ' 0',
 			array($this, 'letter_index_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
@@ -63,7 +63,7 @@ class WP_First_Letter_Avatar_Config {
 
 		add_settings_field(
 			'wpfla_file_format',
-			'File format<br/>Default: png',
+			__('File format', 'wp-first-letter-avatar') . '<br/>' . __('Default:', 'wp-first-letter-avatar') . ' png',
 			array($this, 'file_format_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
@@ -71,7 +71,7 @@ class WP_First_Letter_Avatar_Config {
 
 		add_settings_field(
 			'wpfla_unknown_image',
-			'Unknown image name<br/>Default: mystery',
+			__('Unknown image name', 'wp-first-letter-avatar') . '<br/>' . __('Default:', 'wp-first-letter-avatar') . ' mystery',
 			array($this, 'unknown_image_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
@@ -79,7 +79,7 @@ class WP_First_Letter_Avatar_Config {
 
 		add_settings_field(
 			'wpfla_avatar_set',
-			'Avatar set<br/>Default: default',
+			__('Avatar set', 'wp-first-letter-avatar') . '<br/>' . __('Default:', 'wp-first-letter-avatar') . ' default',
 			array($this, 'avatar_set_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
@@ -87,7 +87,7 @@ class WP_First_Letter_Avatar_Config {
 
 		add_settings_field(
 			'wpfla_use_gravatar',
-			'Use Gravatar<br/>Default: check',
+			__('Use Gravatar', 'wp-first-letter-avatar') . '<br/>' . __('Default:', 'wp-first-letter-avatar') . ' ' .  __('check', 'wp-first-letter-avatar'),
 			array($this, 'use_gravatar_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
@@ -95,7 +95,7 @@ class WP_First_Letter_Avatar_Config {
 
 		add_settings_field(
 			'wpfla_round_avatars',
-			'Round avatars<br/>Default: uncheck',
+			__('Round avatars', 'wp-first-letter-avatar') . '<br/>' . __('Default:', 'wp-first-letter-avatar') . ' ' .  __('uncheck', 'wp-first-letter-avatar'),
 			array($this, 'round_avatars_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
@@ -103,7 +103,7 @@ class WP_First_Letter_Avatar_Config {
 
 		add_settings_field(
 			'wpfla_filter_priority',
-			'Plugin filter priority<br/>Default: 10',
+			__('Plugin filter priority', 'wp-first-letter-avatar') . '<br/>' . __('Default:', 'wp-first-letter-avatar') . ' 10',
 			array($this, 'filter_priority_render'),
 			'wpfla_pluginPage',
 			'wpfla_pluginPage_section'
@@ -199,39 +199,47 @@ class WP_First_Letter_Avatar_Config {
 
 			<h3>Fields description:</h3>
 			<p>
-				<strong>Letter index</strong><br />
-				<span style="text-decoration: underline">0</span>: use first letter for the avatar; <span style="text-decoration: underline">1</span>: use second letter; <span style="text-decoration: underline">-1</span>: use last letter, etc.
+				<strong><?php _e('Letter index', 'wp-first-letter-avatar'); ?></strong><br />
+				<?php echo sprintf(__('%s use first letter for the avatar; %s use second letter; %s use last letter, etc.', 'wp-first-letter-avatar'),
+				'<span style="text-decoration: underline">0</span>:', '<span style="text-decoration: underline">1</span>:', '<span style="text-decoration: underline">-1</span>:'); ?>
 			</p>
 			<p>
-				<strong>File format</strong><br />
-				File format of your avatars, for example <span style="text-decoration: underline">png</span> or <span style="text-decoration: underline">jpg</span>.
+				<strong><?php _e('File format', 'wp-first-letter-avatar'); ?></strong><br />
+				<?php echo sprintf(__('File format of your avatars, for example %s or %s.', 'wp-first-letter-avatar'),
+				'<span style="text-decoration: underline">png</span>', '<span style="text-decoration: underline">jpg</span>'); ?>
 			</p>
 			<p>
-				<strong>Unknown image name</strong><br />
-				Name of the file used for unknown usernames (without extension).
+				<strong><?php _e('Unknown image name', 'wp-first-letter-avatar'); ?></strong><br />
+				<?php _e('Name of the file used for unknown usernames (without extension).', 'wp-first-letter-avatar'); ?>				
 			</p>
 			<p>
-				<strong>Avatar set</strong><br />
-				Directory where your avatars are stored.
+				<strong><?php _e('Avatar set', 'wp-first-letter-avatar'); ?></strong><br />
+				<?php _e('Directory where your avatars are stored.', 'wp-first-letter-avatar'); ?>				
 			</p>
 			<p>
-				<strong>Use Gravatar</strong><br />
-				<span style="text-decoration: underline">Check</span>: use Gravatar when available; <span style="text-decoration: underline">Uncheck</span>: always use custom avatars.
+				<strong><?php _e('Use Gravatar', 'wp-first-letter-avatar'); ?></strong><br />
+				<?php echo sprintf(__('%sCheck%s: use Gravatar when available; %sUncheck%s: always use custom avatars.', 'wp-first-letter-avatar'),
+				'<span style="text-decoration: underline">', '</span>', '<span style="text-decoration: underline">', '</span>'); ?>
 			</p>
 			<p>
-				<strong>Round avatars</strong><br />
-				<span style="text-decoration: underline">Check</span>: use rounded avatars; <span style="text-decoration: underline">Uncheck</span>: use standard avatars. This may not always work - your theme may override this setting.
+				<strong><?php _e('Round avatars', 'wp-first-letter-avatar'); ?></strong><br />
+				<?php echo sprintf(__('%sCheck%s: use rounded avatars; %sUncheck%s: use standard avatars. This may not always work - your theme may override this setting.', 'wp-first-letter-avatar'),
+				'<span style="text-decoration: underline">', '</span>', '<span style="text-decoration: underline">', '</span>'); ?>
 			</p>
 			<p>
-				<strong>Filter priority</strong><br />
-				If you are using multiple avatar plugins, you can increase or decrease execution priority of this plugin. If WP First Letter Avatar is overriding your other plugins, try changing this to a lower value (for example 9).
+				<strong><?php _e('Filter priority', 'wp-first-letter-avatar'); ?></strong><br />
+				<?php _e('If you are using multiple avatar plugins, you can increase or decrease execution priority of this plugin. If WP First Letter Avatar is overriding your other plugins, try changing this to a lower value (for example 9).', 'wp-first-letter-avatar'); ?>
 			</p>
-			<p>In case of any problems, use default values.</p>
+			<p><?php _e('In case of any problems, please use default values.', 'wp-first-letter-avatar'); ?></p>
 
 			<hr />
 
-			<p style="text-align: right; margin-right:30px">If you like the plugin, please <a href="https://wordpress.org/support/view/plugin-reviews/wp-first-letter-avatar#postform">leave a review in WordPress Plugin Directory</a>!<br />
-				WP First Letter Avatar was created by <a href="http://dev49.net/">Daniel Wroblewski</a></p>
+			<p style="text-align: right; margin-right:30px"><?php 
+			$ending_text = sprintf(__('If you like the plugin, please <a href="%s">leave a rating in WordPress Plugin Directory</a>!', 'wp-first-letter-avatar'), 'https://wordpress.org/support/view/plugin-reviews/wp-first-letter-avatar#postform');
+			$ending_text .= '<br />';
+			$ending_text .= __('WP First Letter Avatar was created by', 'wp-first-letter-avatar') . ' <a href="http://dev49.net/">Daniel Wroblewski</a>';
+			echo $ending_text;
+			?></p>
 
 		</form>
 	<?php
