@@ -364,6 +364,30 @@ class WP_First_Letter_Avatar {
 			$file_name_mb = mb_strtolower($file_name_mb); // and again...
 		}
 
+		// couple of exceptions:
+		if ($file_name_mb == 'ą'){
+			$file_name = 'a';
+			$file_name_mb = 'a';
+		} else if ($file_name_mb == 'ć'){
+			$file_name = 'c';
+			$file_name_mb = 'c';
+		} else if ($file_name_mb == 'ę'){
+			$file_name = 'e';
+			$file_name_mb = 'e';
+		} else if ($file_name_mb == 'ń'){
+			$file_name = 'n';
+			$file_name_mb = 'n';
+		} else if ($file_name_mb == 'ó'){
+			$file_name = 'o';
+			$file_name_mb = 'o';
+		} else if ($file_name_mb == 'ś'){
+			$file_name = 's';
+			$file_name_mb = 's';
+		} else if ($file_name_mb == 'ż' || $file_name_mb == 'ź'){
+			$file_name = 'z';
+			$file_name_mb = 'z';
+		}
+
 		// create arrays with allowed character ranges:
 		$allowed_numbers = range(0, 9);
 		foreach ($allowed_numbers as $number){ // cast each item to string (strict param of in_array requires same type)
