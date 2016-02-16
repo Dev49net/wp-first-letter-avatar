@@ -197,7 +197,7 @@ class WP_First_Letter_Avatar_Config {
 
 			<hr />
 
-			<h3>Fields description:</h3>
+			<h3><?php _e('Fields description:', 'wp-first-letter-avatar'); ?></h3>
 			<p>
 				<strong><?php _e('Letter index', 'wp-first-letter-avatar'); ?></strong><br />
 				<?php echo sprintf(__('%s use first letter for the avatar; %s use second letter; %s use last letter, etc.', 'wp-first-letter-avatar'),
