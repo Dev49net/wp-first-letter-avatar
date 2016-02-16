@@ -2,7 +2,7 @@
 Plugin Name: WP First Letter Avatar
 Text Domain: wp-first-letter-avatar
 Domain Path: /languages
-Version: 2.2.4
+Version: 2.2.5
 Plugin URI: http://dev49.net
 Contributors: Dev49.net, DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
