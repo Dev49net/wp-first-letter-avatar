@@ -233,6 +233,7 @@ class WP_First_Letter_Avatar {
 		// create two main variables:
 		$name = '';
 		$email = '';
+		$user = null; // we will try to assign User object to this
 
 
 		if (is_object($id_or_email)){ // id_or_email can actually be also a comment object, so let's check it first
@@ -261,7 +262,7 @@ class WP_First_Letter_Avatar {
 				$name = $user->data->display_name;
 				$email = $user->data->user_email;
 			} else if (is_string($id_or_email)){ // if string was supplied
-				if (!filter_var($email, FILTER_VALIDATE_EMAIL)){ // if it is NOT email, it must be a username
+				if (!filter_var($id_or_email, FILTER_VALIDATE_EMAIL)){ // if it is NOT email, it must be a username
 					$name = $id_or_email;
 				} else { // it must be email
 					$email = $id_or_email;
@@ -301,6 +302,14 @@ class WP_First_Letter_Avatar {
 				$email = get_comment_author_email();
 			}
 
+		}
+
+		if (empty($name) && !empty($user) && is_object($user)){ // if we do not have the name, but we have user object
+			$name = $user->display_name;
+		}
+
+		if (empty($email) && !empty($user) && is_object($user)){ // if we do not have the email, but we have user object
+			$email = $user->user_email;
 		}
 
 		$avatar_output = $this->set_avatar($name, $email, $size, $alt);
