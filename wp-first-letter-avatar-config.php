@@ -237,7 +237,7 @@ class WP_First_Letter_Avatar_Config {
 			<p style="text-align: right; margin-right:30px"><?php 
 			$ending_text = sprintf(__('If you like the plugin, please <a href="%s">leave a rating in WordPress Plugin Directory</a>!', 'wp-first-letter-avatar'), 'https://wordpress.org/support/view/plugin-reviews/wp-first-letter-avatar#postform');
 			$ending_text .= '<br />';
-			$ending_text .= __('WP First Letter Avatar was created by', 'wp-first-letter-avatar') . ' <a href="http://dev49.net/">Daniel Wroblewski</a>';
+			$ending_text .= sprintf(__('WP First Letter Avatar was created by <a href="%s">Daniel Wroblewski</a>', 'wp-first-letter-avatar'), 'http://dev49.net/');
 			echo $ending_text;
 			?></p>
 
