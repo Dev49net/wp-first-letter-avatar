@@ -1,0 +1,166 @@
+# Copyright (C) 2016 WP First Letter Avatar
+# This file is distributed under the same license as the WP First Letter Avatar package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP First Letter Avatar 2.2.4\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-first-letter-avatar\n"
+"POT-Creation-Date: 2016-02-16 15:45:16+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-02-16 16:52+0100\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: Daniel Wroblewski <info@dev49.net>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+"X-Generator: Poedit 1.7.4\n"
+
+#: wp-first-letter-avatar-config.php:51
+msgid "Plugin configuration"
+msgstr "Advanced configuration"
+
+#: wp-first-letter-avatar-config.php:58 wp-first-letter-avatar-config.php:202
+msgid "Letter index"
+msgstr "Letter index"
+
+#: wp-first-letter-avatar-config.php:58 wp-first-letter-avatar-config.php:66
+#: wp-first-letter-avatar-config.php:74 wp-first-letter-avatar-config.php:82
+#: wp-first-letter-avatar-config.php:90 wp-first-letter-avatar-config.php:98
+#: wp-first-letter-avatar-config.php:106
+msgid "Default:"
+msgstr "Default:"
+
+#: wp-first-letter-avatar-config.php:66 wp-first-letter-avatar-config.php:207
+msgid "File format"
+msgstr "File format"
+
+#: wp-first-letter-avatar-config.php:74 wp-first-letter-avatar-config.php:212
+msgid "Unknown image name"
+msgstr "Unknown image name"
+
+#: wp-first-letter-avatar-config.php:82 wp-first-letter-avatar-config.php:216
+msgid "Avatar set"
+msgstr "Avatar set"
+
+#: wp-first-letter-avatar-config.php:90 wp-first-letter-avatar-config.php:220
+msgid "Use Gravatar"
+msgstr "Use Gravatar"
+
+#: wp-first-letter-avatar-config.php:90
+msgid "check"
+msgstr "check"
+
+#: wp-first-letter-avatar-config.php:98 wp-first-letter-avatar-config.php:225
+msgid "Round avatars"
+msgstr "Round avatars"
+
+#: wp-first-letter-avatar-config.php:98
+msgid "uncheck"
+msgstr "uncheck"
+
+#: wp-first-letter-avatar-config.php:106
+msgid "Plugin filter priority"
+msgstr "Plugin filter priority"
+
+#: wp-first-letter-avatar-config.php:203
+msgid ""
+"%s use first letter for the avatar; %s use second letter; %s use last letter, etc."
+msgstr ""
+"%s use first letter for the avatar; %s use second letter; %s use last letter, etc."
+
+#: wp-first-letter-avatar-config.php:208
+msgid "File format of your avatars, for example %s or %s."
+msgstr "File format of your avatars, for example %s or %s."
+
+#: wp-first-letter-avatar-config.php:213
+msgid "Name of the file used for unknown usernames (without extension)."
+msgstr "Name of the file used for unknown usernames (without extension)."
+
+#: wp-first-letter-avatar-config.php:217
+msgid "Directory where your avatars are stored."
+msgstr "Directory where your avatars are stored."
+
+#: wp-first-letter-avatar-config.php:221
+msgid "%sCheck%s: use Gravatar when available; %sUncheck%s: always use custom avatars."
+msgstr "%sCheck%s: use Gravatar when available; %sUncheck%s: always use custom avatars."
+
+#: wp-first-letter-avatar-config.php:226
+msgid ""
+"%sCheck%s: use rounded avatars; %sUncheck%s: use standard avatars. This may not "
+"always work - your theme may override this setting."
+msgstr ""
+"%sCheck%s: use rounded avatars; %sUncheck%s: use standard avatars. This may not "
+"always work - your theme may override this setting."
+
+#: wp-first-letter-avatar-config.php:230
+msgid "Filter priority"
+msgstr "Filter priority"
+
+#: wp-first-letter-avatar-config.php:231
+msgid ""
+"If you are using multiple avatar plugins, you can increase or decrease execution "
+"priority of this plugin. If WP First Letter Avatar is overriding your other plugins, "
+"try changing this to a lower value (for example 9)."
+msgstr ""
+"If you are using multiple avatar plugins, you can increase or decrease execution "
+"priority of this plugin. If WP First Letter Avatar is overriding your other plugins, "
+"try changing this to a lower value (for example 9)."
+
+#: wp-first-letter-avatar-config.php:233
+msgid "In case of any problems, please use default values."
+msgstr "In case of any problems, please use default values."
+
+#: wp-first-letter-avatar-config.php:238
+msgid ""
+"If you like the plugin, please <a href=\"%s\">leave a rating in WordPress Plugin "
+"Directory</a>!"
+msgstr ""
+"If you like the plugin, please <a href=\"%s\">leave a rating in WordPress Plugin "
+"Directory</a>!"
+
+#: wp-first-letter-avatar-config.php:240
+msgid "WP First Letter Avatar was created by"
+msgstr "WP First Letter Avatar was created by"
+
+#: wp-first-letter-avatar.php:160
+msgid "<p>This plugin requires %s version %s or greater.</p>"
+msgstr "<p>This plugin requires %s version %s or greater.</p>"
+
+#: wp-first-letter-avatar.php:161
+msgid "Plugin Activation Error"
+msgstr "Plugin Activation Error"
+
+#: wp-first-letter-avatar.php:175
+msgid "Settings"
+msgstr "Settings"
+
+#. Plugin Name of the plugin/theme
+msgid "WP First Letter Avatar"
+msgstr "WP First Letter Avatar"
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "http://dev49.net"
+msgstr "http://dev49.net"
+
+#. Description of the plugin/theme
+msgid ""
+"Set custom avatars for users with no Gravatar. The avatar will be the first (or any "
+"other) letter of the user's name on a colorful background."
+msgstr ""
+"Set custom avatars for users with no Gravatar. The avatar will be the first (or any "
+"other) letter of the user's name on a colorful background."
+
+#. Author of the plugin/theme
+msgid "Dev49.net"
+msgstr "Dev49.net"
+
+#. Tags of the plugin/theme
+msgid ""
+"avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress "
+"avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, "
+"initial avatar"
+msgstr ""
+"avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress "
+"avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, "
+"initial avatar"
