@@ -1,7 +1,7 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
 Text Domain: wp-first-letter-avatar
-Domain Path: /languages
+Domain Path: /languages/
 Version: 2.2.5
 Plugin URI: http://dev49.net
 Contributors: Dev49.net, DanielAGW

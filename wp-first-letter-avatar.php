@@ -3,7 +3,7 @@
 /**
  * Plugin Name: WP First Letter Avatar
  * Text Domain: wp-first-letter-avatar
- * Domain Path: /languages
+ * Domain Path: /languages/
  * Plugin URI: http://dev49.net
  * Contributors: Dev49.net, DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the user's name on a colorful background.
