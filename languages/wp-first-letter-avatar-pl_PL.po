@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the WP First Letter Avatar package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP First Letter Avatar 2.2.4\n"
+"Project-Id-Version: WP First Letter Avatar 2.2.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-first-letter-avatar\n"
-"POT-Creation-Date: 2016-02-16 16:12:52+00:00\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-02-16 18:16+0100\n"
+"POT-Creation-Date: 2016-02-16 21:30:31+00:00\n"
+"PO-Revision-Date: 2016-02-16 22:33+0100\n"
 "Last-Translator: Daniel Wroblewski <info@dev49.net>\n"
 "Language-Team: \n"
 "Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.7.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -61,6 +61,10 @@ msgstr "niezaznaczone"
 #: wp-first-letter-avatar-config.php:106
 msgid "Plugin filter priority"
 msgstr "Priorytet filtrów wtyczki"
+
+#: wp-first-letter-avatar-config.php:200
+msgid "Fields description:"
+msgstr "Opis opcji:"
 
 #: wp-first-letter-avatar-config.php:203
 msgid ""
@@ -124,18 +128,19 @@ msgstr ""
 "a>!"
 
 #: wp-first-letter-avatar-config.php:240
-msgid "WP First Letter Avatar was created by"
-msgstr "Autorem wtyczki WP First Letter Avatar jest"
+msgid "WP First Letter Avatar was created by <a href=\"%s\">Daniel Wroblewski</a>"
+msgstr ""
+"Autorem wtyczki WP First Letter Avatar jest <a href=\"%s\">Daniel Wróblewski</a>"
 
-#: wp-first-letter-avatar.php:160
+#: wp-first-letter-avatar.php:175
 msgid "<p>This plugin requires %s version %s or greater.</p>"
 msgstr "<p>Ta wtyczka wymaga %s w wersji %s lub wyższej.</p>"
 
-#: wp-first-letter-avatar.php:161
+#: wp-first-letter-avatar.php:176
 msgid "Plugin Activation Error"
 msgstr "Błąd aktywacji wtyczki"
 
-#: wp-first-letter-avatar.php:175
+#: wp-first-letter-avatar.php:190
 msgid "Settings"
 msgstr "Ustawienia"
 
@@ -166,3 +171,6 @@ msgid ""
 "avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, "
 "initial avatar"
 msgstr ""
+
+#~ msgid "WP First Letter Avatar was created by"
+#~ msgstr "Autorem wtyczki WP First Letter Avatar jest"
