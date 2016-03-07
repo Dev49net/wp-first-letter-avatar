@@ -384,6 +384,7 @@ class WP_First_Letter_Avatar {
 		// get picture filename (and lowercase it) from commenter name:
 		if (empty($name)){  // if, for some reason, the result is empty, set file_name to default unknown image
 			$file_name = $this->image_unknown;
+			$file_name_mb = $this->image_unknown;
 		} else {
 			$file_name = substr($name, $this->letter_index, 1); // get one letter counting from letter_index
 			$file_name = strtolower($file_name); // lowercase it...
