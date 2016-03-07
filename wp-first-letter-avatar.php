@@ -7,11 +7,11 @@
  * Plugin URI: http://dev49.net
  * Contributors: Dev49.net, DanielAGW
  * Description: Set custom avatars for users with no Gravatar. The avatar will be the first (or any other) letter of the user's name on a colorful background.
- * Version: 2.2.5
+ * Version: 2.2.6
  * Author: Dev49.net
  * Author URI: http://dev49.net
  * Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
- * Requires at least: 4.0
+ * Requires at least: 4.4
  * Tested up to: 4.4.2
  * Stable tag: trunk
  * License: GPLv2 or later
