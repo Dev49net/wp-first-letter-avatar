@@ -81,6 +81,10 @@ Yes - just go to plugin settings and click Round avatars.
 
 == Changelog ==
 
+= 2.2.6 =
+* Fixed undeclared variable notice
+* Fixed mbstring extension error
+
 = 2.2.5 =
 * Added Polish translation
 * Fixed problem with bbPress avatars
@@ -170,6 +174,9 @@ Yes - just go to plugin settings and click Round avatars.
 * First WP First Letter Avatar release
 
 == Upgrade Notice ==
+
+= 2.2.6 =
+Fixed minor issues, updated recommended.
 
 = 2.2.5 =
 Fixed problem with bbPress and possibly other plugins - update recommended.
