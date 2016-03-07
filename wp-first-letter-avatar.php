@@ -390,8 +390,13 @@ class WP_First_Letter_Avatar {
 
 			$file_name = substr($name, $this->letter_index, 1); // get one letter counting from letter_index
 			$file_name = strtolower($file_name); // lowercase it...
-			$file_name_mb = mb_substr($name, $this->letter_index, 1); // repeat, this time with multibyte functions
-			$file_name_mb = mb_strtolower($file_name_mb); // and again...
+
+			if (extension_loaded('mbstring')){ // check if mbstring is loaded to allow multibyte string operations
+				$file_name_mb = mb_substr($name, $this->letter_index, 1); // repeat, this time with multibyte functions
+				$file_name_mb = mb_strtolower($file_name_mb); // and again...
+			} else { // mbstring is not loaded - we're not going to worry about it, just use the original string
+				$file_name_mb = $file_name;
+			}
 
 			// couple of exceptions:
 			if ($file_name_mb == 'ą'){
