@@ -341,8 +341,7 @@ class WP_First_Letter_Avatar {
 	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = ''){ // only size and alt arguments are used
 
 		// get user information:
-		global $current_user;
-		get_currentuserinfo();
+		$current_user = wp_get_current_user();
 		$name = $current_user->display_name;
 		$email = $current_user->user_email;
 
