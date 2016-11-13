@@ -31,7 +31,7 @@ class WP_First_Letter_Avatar {
 
 	// Setup:
 	const MINIMUM_PHP = '5.4';
-	const MINIMUM_WP = '4.0';
+	const MINIMUM_WP = '4.6';
 	const IMAGES_PATH = 'images'; // avatars root directory
 	const GRAVATAR_URL = 'https://secure.gravatar.com/avatar/'; // default url for gravatar
 	const PLUGIN_NAME = 'WP First Letter Avatar';
@@ -57,7 +57,6 @@ class WP_First_Letter_Avatar {
 
 
 	public function __construct(){
-		global $wp_version;
 		
 		/* --------------- CONFIGURATION --------------- */
 
@@ -102,14 +101,7 @@ class WP_First_Letter_Avatar {
 		add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
 
 		// add filter to get_avatar:
-		if (version_compare($wp_version, '4.2.0', '<')) {
-			// The $args started only started to be passed in Wordpress 4.2.0
-			add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 5);
-		}
-		else {
-			add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 6);
-		}
-		
+		add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 6);
 
         // add filter for wpDiscuz:
 		add_filter('wpdiscuz_author_avatar_field', array($this, 'set_wpdiscuz_avatar'), $this->filter_priority, 4);
@@ -155,15 +147,8 @@ class WP_First_Letter_Avatar {
 	 * filter the avatar in top bar (for logged in users)
 	 */
 	public function admin_bar_menu_action(){ // change avatar in the userbar at the top
-		global $wp_version;
-		
-		if (version_compare($wp_version, '4.2.0', '<')) {
-			// The $args started only started to be passed in Wordpress 4.2.0
-			add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 5);
-		}
-		else {
-			add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 6);
-		}
+
+		add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 6);
 
 	}
 
@@ -316,7 +301,7 @@ class WP_First_Letter_Avatar {
 				}
 			}
 
-		} else { // if it's a standard comment, use basic comment properties and/or functions to retrive info
+		} else { // if it's a standard comment, use basic comment properties and/or functions to retrieve info
 
 			$comment = $id_or_email;
 
@@ -353,7 +338,7 @@ class WP_First_Letter_Avatar {
 	/*
 	 * This method is used to filter the avatar displayed in upper bar (displayed only for logged in users)
 	 */
-	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = '', $args = array()){ // only size and alt arguments are used
+	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = '', $args = array()){
 
 		// get user information:
 		$current_user = wp_get_current_user();
@@ -373,6 +358,7 @@ class WP_First_Letter_Avatar {
 	 * Generate full HTML <img /> tag with avatar URL, size, CSS classes etc.
 	 */
 	private function generate_avatar_img_tag($avatar_uri, $size, $alt = '', $args = array()){
+
 		// Default classes
 		$css_classes = 'avatar avatar-' . $size . ' photo';
 		
@@ -388,8 +374,7 @@ class WP_First_Letter_Avatar {
 		if (array_key_exists('class', $args)) {
 			if (is_array($args['class'])) {
 				$css_classes .= ' ' . implode(' ', $args['class']);
-			}
-			else {
+			} else {
 				$css_classes .= ' ' . $args['class'];
 			}
 		}
