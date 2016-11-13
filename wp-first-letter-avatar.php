@@ -57,7 +57,8 @@ class WP_First_Letter_Avatar {
 
 
 	public function __construct(){
-
+		global $wp_version;
+		
 		/* --------------- CONFIGURATION --------------- */
 
 		// get plugin configuration from database:
@@ -101,7 +102,14 @@ class WP_First_Letter_Avatar {
 		add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
 
 		// add filter to get_avatar:
-		add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 5);
+		if (version_compare($wp_version, '4.2.0', '<')) {
+			// The $args started only started to be passed in Wordpress 4.2.0
+			add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 5);
+		}
+		else {
+			add_filter('get_avatar', array($this, 'set_comment_avatar'), $this->filter_priority, 6);
+		}
+		
 
         // add filter for wpDiscuz:
 		add_filter('wpdiscuz_author_avatar_field', array($this, 'set_wpdiscuz_avatar'), $this->filter_priority, 4);
@@ -147,8 +155,15 @@ class WP_First_Letter_Avatar {
 	 * filter the avatar in top bar (for logged in users)
 	 */
 	public function admin_bar_menu_action(){ // change avatar in the userbar at the top
-
-		add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 5);
+		global $wp_version;
+		
+		if (version_compare($wp_version, '4.2.0', '<')) {
+			// The $args started only started to be passed in Wordpress 4.2.0
+			add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 5);
+		}
+		else {
+			add_filter('get_avatar', array($this, 'set_userbar_avatar'), $this->filter_priority, 6);
+		}
 
 	}
 
@@ -213,7 +228,7 @@ class WP_First_Letter_Avatar {
 	/*
 	 * This is the main method used for generating avatars. It returns full HTML <img /> tag.
 	 */
-	private function set_avatar($name, $email, $size, $alt = ''){
+	private function set_avatar($name, $email, $size, $alt = '', $args = array()){
 
 		if (empty($name)){ // if, for some reason, there is no name, use email instead
 			$name = $email;
@@ -232,7 +247,7 @@ class WP_First_Letter_Avatar {
 			$avatar_uri = $first_letter_uri;
 		}
 
-		$avatar_img_output = $this->generate_avatar_img_tag($avatar_uri, $size, $alt); // get final <img /> tag for the avatar/gravatar
+		$avatar_img_output = $this->generate_avatar_img_tag($avatar_uri, $size, $alt, $args); // get final <img /> tag for the avatar/gravatar
 
 		return $avatar_img_output;
 
@@ -243,7 +258,7 @@ class WP_First_Letter_Avatar {
 	/*
 	 * This filters every WordPress avatar call and return full HTML <img /> tag
 	 */
-	public function set_comment_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = ''){
+	public function set_comment_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = '', $args = array()){
 
 		// create two main variables:
 		$name = '';
@@ -327,7 +342,7 @@ class WP_First_Letter_Avatar {
 			$email = $user->user_email;
 		}
 
-		$avatar_output = $this->set_avatar($name, $email, $size, $alt);
+		$avatar_output = $this->set_avatar($name, $email, $size, $alt, $args);
 
 		return $avatar_output;
 
@@ -338,7 +353,7 @@ class WP_First_Letter_Avatar {
 	/*
 	 * This method is used to filter the avatar displayed in upper bar (displayed only for logged in users)
 	 */
-	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = ''){ // only size and alt arguments are used
+	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = '', $args = array()){ // only size and alt arguments are used
 
 		// get user information:
 		$current_user = wp_get_current_user();
@@ -346,7 +361,7 @@ class WP_First_Letter_Avatar {
 		$email = $current_user->user_email;
 
 		// use obtained data to return full HTML <img> tag
-		$avatar_output = $this->set_avatar($name, $email, $size, $alt);
+		$avatar_output = $this->set_avatar($name, $email, $size, $alt, $args);
 
 		return $avatar_output;
 
@@ -357,15 +372,29 @@ class WP_First_Letter_Avatar {
 	/*
 	 * Generate full HTML <img /> tag with avatar URL, size, CSS classes etc.
 	 */
-	private function generate_avatar_img_tag($avatar_uri, $size, $alt = ''){
-
+	private function generate_avatar_img_tag($avatar_uri, $size, $alt = '', $args = array()){
+		// Default classes
+		$css_classes = 'avatar avatar-' . $size . ' photo';
+		
+		// Append plugin class
+		$css_classes .= ' wpfla';
+		
 		// prepare extra classes for <img> tag depending on plugin settings:
-		$extra_img_class = '';
 		if ($this->round_avatars == true){
-			$extra_img_class .= 'round-avatars';
+			$css_classes .= ' round-avatars';
+		}
+		
+		// Append extra classes
+		if (array_key_exists('class', $args)) {
+			if (is_array($args['class'])) {
+				$css_classes .= ' ' . implode(' ', $args['class']);
+			}
+			else {
+				$css_classes .= ' ' . $args['class'];
+			}
 		}
 
-		$output_data = "<img alt='{$alt}' src='{$avatar_uri}' class='avatar avatar-{$size} photo wpfla {$extra_img_class}' width='{$size}' height='{$size}' />";
+		$output_data = "<img alt='{$alt}' src='{$avatar_uri}' class='{$css_classes}' width='{$size}' height='{$size}' />";
 
 		// return the complete <img> tag:
 		return $output_data;
