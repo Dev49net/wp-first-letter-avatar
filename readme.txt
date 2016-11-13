@@ -1,11 +1,11 @@
 === WP First Letter Avatar ===
 Plugin Name: WP First Letter Avatar
-Version: 2.2.6.1
+Version: 2.2.7
 Plugin URI: http://dev49.net
 Contributors: Dev49.net, DanielAGW
 Tags: avatars, comments, custom avatar, discussion, change avatar, avatar, custom wordpress avatar, first letter avatar, comment change avatar, wordpress new avatar, avatar, initial avatar
-Requires at least: 4.4
-Tested up to: 4.5
+Requires at least: 4.6
+Tested up to: 4.6.1
 Stable tag: trunk
 Author: Dev49.net
 Author URI: http://dev49.net
@@ -81,6 +81,9 @@ Yes - just go to plugin settings and click Round avatars.
 
 == Changelog ==
 
+= 2.2.7 =
+* Added option to pass additional arguments to get_avatar() - thanks dpsjorge! (for developers only)
+
 = 2.2.6.1 =
 * Fixed get_currentuserinfo() function deprecated notice
 
@@ -93,7 +96,7 @@ Yes - just go to plugin settings and click Round avatars.
 * Fixed problem with bbPress avatars
 
 = 2.2.4 =
-* Added fallback for Polish letters (thanks Micha³!)
+* Added fallback for Polish letters (thanks Michaï¿½!)
 * Plugin prepared for translations (contributors are welcome!)
 
 = 2.2.3 =
@@ -177,6 +180,9 @@ Yes - just go to plugin settings and click Round avatars.
 * First WP First Letter Avatar release
 
 == Upgrade Notice ==
+
+= 2.2.7 =
+Added new feature for developers, update not necessary.
 
 = 2.2.6.1 =
 * Removed deprecated function - update recommended if you are using WP 4.5.x
