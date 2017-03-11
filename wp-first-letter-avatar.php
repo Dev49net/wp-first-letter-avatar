@@ -18,17 +18,16 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-
-
 // Exit if accessed directly:
 if (!defined('ABSPATH')){
     exit;
 }
 
-
-
-class WP_First_Letter_Avatar {
-
+/**
+ * Class WP_First_Letter_Avatar
+ */
+class WP_First_Letter_Avatar
+{
 	// Setup:
 	const MINIMUM_PHP = '5.4';
 	const MINIMUM_WP = '4.6';
@@ -46,16 +45,44 @@ class WP_First_Letter_Avatar {
 	const FILTER_PRIORITY = 10;  // plugin filter priority
 
 	// properties duplicating const values (will be changed in constructor after reading config from DB):
+    /**
+     * @var bool
+     */
 	private $use_gravatar = self::USE_GRAVATAR;
+
+    /**
+     * @var string
+     */
 	private $avatar_set = self::AVATAR_SET;
+
+    /**
+     * @var int
+     */
 	private $letter_index = self::LETTER_INDEX;
+
+    /**
+     * @var string
+     */
 	private $images_format = self::IMAGES_FORMAT;
+
+    /**
+     * @var bool
+     */
 	private $round_avatars = self::ROUND_AVATARS;
+
+    /**
+     * @var string
+     */
 	private $image_unknown = self::IMAGE_UNKNOWN;
+
+    /**
+     * @var int
+     */
 	private $filter_priority = self::FILTER_PRIORITY;
 
-
-
+    /**
+     * WP_First_Letter_Avatar constructor.
+     */
 	public function __construct(){
 		
 		/* --------------- CONFIGURATION --------------- */
@@ -118,9 +145,7 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * Plugins loaded - load text domain
 	 */
 	public function plugins_loaded(){
@@ -129,9 +154,7 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * Add scripts and stylesheets
 	 */
 	public function enqueue_scripts(){
@@ -140,9 +163,7 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * This method is called when 'admin_bar_menu' action is called - it is needed to apply another filter just to
 	 * filter the avatar in top bar (for logged in users)
 	 */
@@ -152,9 +173,7 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * On plugin activation check WP and PHP version and if requirements are not met, disable the plugin and display error
 	 */
 	public function plugin_activate(){ // plugin activation event
@@ -179,10 +198,12 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * Add Settings link to Plugins section
+	 *
+	 * @param array $links
+     *
+     * @return array
 	 */
 	public function add_settings_link($links){
 
@@ -194,11 +215,16 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
      * This is method is used to filter wpDiscuz parameter - it feeds $comment object to get_avatar() function
      * (more on line 102 in wpdiscuz/templates/comment/class.WpdiscuzWalker.php)
+     *
+     * @param $author_avatar_field
+     * @param $comment
+     * @param $user
+     * @param $profile_url
+     *
+     * @return WP_Comment
      */
 	public function set_wpdiscuz_avatar($author_avatar_field, $comment, $user, $profile_url){
 
@@ -208,10 +234,16 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * This is the main method used for generating avatars. It returns full HTML <img /> tag.
+     *
+     * @param string $name
+     * @param string $email
+     * @param string $size
+     * @param string $alt
+     * @param array $args
+     *
+     * @return string
 	 */
 	private function set_avatar($name, $email, $size, $alt = '', $args = array()){
 
@@ -238,10 +270,17 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * This filters every WordPress avatar call and return full HTML <img /> tag
+     *
+     * @param string $avatar
+     * @param WP_Comment|string $id_or_email
+     * @param string $size
+     * @param string $default
+     * @param string $alt
+     * @param array $args
+     *
+     * @return string
 	 */
 	public function set_comment_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = '', $args = array()){
 
@@ -333,10 +372,17 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * This method is used to filter the avatar displayed in upper bar (displayed only for logged in users)
+     *
+     * @param string $avatar
+     * @param WP_Comment|string $id_or_email
+     * @param string $size
+     * @param string $default
+     * @param string $alt
+     * @param array $args
+     *
+     * @return string
 	 */
 	public function set_userbar_avatar($avatar, $id_or_email, $size = '96', $default = '', $alt = '', $args = array()){
 
@@ -352,10 +398,15 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * Generate full HTML <img /> tag with avatar URL, size, CSS classes etc.
+     *
+     * @param string $avatar_uri
+     * @param string $size
+     * @param string $alt
+     * @param array $args
+     *
+     * @return string
 	 */
 	private function generate_avatar_img_tag($avatar_uri, $size, $alt = '', $args = array()){
 
@@ -386,11 +437,14 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * This method generates full URL for letter avatar (for example http://yourblog.com/wp-content/plugins/wp-first-letter-avatar/images/default/96/k.png),
 	 * according to the $name and $size provided
+     *
+     * @param string $name
+     * @param string $size
+     *
+     * @return string
 	 */
 	private function generate_first_letter_uri($name, $size){
 
@@ -507,10 +561,13 @@ class WP_First_Letter_Avatar {
 
 	}
 
-
-
-	/*
+	/**
 	 * This method generates full URL for Gravatar, according to the $email and $size provided
+     *
+     * @param string $email
+     * @param string $size
+     *
+     * @return string
 	 */
 	private function generate_gravatar_uri($email, $size = '96'){
 
@@ -526,15 +583,10 @@ class WP_First_Letter_Avatar {
 		return $avatar_uri;
 
 	}
-
-
-
 }
-
 
 // create WP_First_Letter_Avatar object:
 $wp_first_letter_avatar = new WP_First_Letter_Avatar();
-
 
 // require back-end of the plugin
 if (is_admin() && !defined('DOING_AJAX')){
