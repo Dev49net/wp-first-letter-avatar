@@ -214,7 +214,7 @@ class WP_First_Letter_Avatar_Config {
 			</p>
 			<p>
 				<strong><?php _e('Avatar set', 'wp-first-letter-avatar'); ?></strong><br />
-				<?php _e('Directory where your avatars are stored.', 'wp-first-letter-avatar'); ?>				
+				<?php _e('Directory where your avatars are stored. Supplied sets: "default", "opensans" and "roboto".', 'wp-first-letter-avatar'); ?>
 			</p>
 			<p>
 				<strong><?php _e('Use Gravatar', 'wp-first-letter-avatar'); ?></strong><br />
